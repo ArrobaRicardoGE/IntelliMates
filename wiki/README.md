@@ -1,6 +1,6 @@
 # IntelliMates Wiki
 
-![IntelliMates logo](https://placehold.co/600x400)
+![IntelliMates logo](https://github.com/ArrobaRicardoGE/IntelliMates/blob/main/wiki/assets/LogoClean.png)
 
 ## Tabla de contenidos
 * [Introducción](#introducción) 
@@ -17,7 +17,7 @@ El documento de especificación de requerimientos está disponible en el siguien
 ## Diagramas entidad relación
 Actualmente, IntelliMates es una plataforma simple que cuenta con pocas entidades, como se muestra en el siguiente diagrama:
 
-![Diagrama entidad relación de IntelliMates](https://placehold.co/600x400)
+![Diagrama entidad relación de IntelliMates](https://github.com/ArrobaRicardoGE/IntelliMates/blob/main/wiki/assets/IntelliMates_ER.drawio.png)
 
 
 ## Arquitectura
@@ -29,4 +29,4 @@ La plataforma está compuesta por los siguientes módulos:
 
 La interacción entre los módulos se puede apreciar en el siguiente diagrama:
 
-![Diagrama de la arquitectura de IntelliMates](https://placehold.co/600x400)
+![Diagrama de la arquitectura de IntelliMates](https://github.com/ArrobaRicardoGE/IntelliMates/blob/main/wiki/assets/IntelliMates_AD.drawio.png)
