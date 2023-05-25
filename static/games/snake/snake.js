@@ -1,13 +1,34 @@
+/**
+ * Script for snake game
+ *
+ * Classes are defined in the classes.js file
+ * The main animation loop is defined in the draw() function, which is passed
+ * to the request animation frame function of the document.
+ */
+
+// Initializate game variables
+
+/**Canvas of the game, where the animation must be drawn */
 const mainCanvas = document.getElementById('mainGame');
+
+/**Amount of cells on the game board */
 const nCells = 30;
+
+// Resize canvas accordingly
 let canvasSize = Math.min(
     mainCanvas.parentElement.offsetWidth,
     mainCanvas.parentElement.offsetHeight
 );
+
+// Make sure that the canvas size if multiple of the amount of cells
 canvasSize -= canvasSize % nCells;
 mainCanvas.width = mainCanvas.height = canvasSize;
+
+/**Context of the game, where the animation must be drawn */
 const ctx = mainCanvas.getContext('2d');
+/**Size of a single sell from the board, in px */
 const cellSize = mainCanvas.width / nCells;
+
 const speed = 5;
 let snake1 = null,
     snake2 = null,
@@ -16,10 +37,24 @@ let snake1 = null,
 let gameOver = true;
 let frameRate = 0;
 
+/**Generate a random positive integer value in the range [0, ub] (inclusive)
+ *
+ * Parameters: ub (int) the upper bound
+ *
+ * Returns: Random positive integer in the range [0, ub]
+ */
 function randomInt(ub) {
     return Math.floor(Math.random() * ub);
 }
 
+/**Main class for the snake
+ *
+ * Contains the logic for drawing and moving a snake entity in the game.
+ *
+ * Parameters: x (int) the initial x coordinate
+ *             y (int) the initial y coordinate
+ *             color (string) the color of the snake
+ */
 class Snake {
     constructor(x, y, color) {
         this.size = 1;
@@ -29,13 +64,9 @@ class Snake {
         this.color = color;
     }
 
+    /**Draws the snake in the current context */
     show() {
-        // let col = 0;
-        // let init = 'rgb(';
         for (let i = 0; i < this.size; i++) {
-            // let colorRes = '';
-            // colorRes = init + col + ',' + col + ',255)';
-            // col = Math.min(col + 5, 255);
             ctx.fillStyle = this.color;
             ctx.fillRect(
                 this.body[i][0] + 1,
@@ -46,6 +77,7 @@ class Snake {
         }
     }
 
+    /**Moves the snake body towards the current direction */
     advance() {
         for (let i = this.size - 1; i > 0; i--) {
             this.body[i][0] = this.body[i - 1][0];
@@ -58,17 +90,26 @@ class Snake {
     }
 }
 
+/**Main class for the apple
+ *
+ * Contains the logic for drawing and choosing a random position for the apple
+ * to spawn
+ */
 class Apple {
     constructor() {
         this.x = cellSize * randomInt(mainCanvas.height / cellSize);
         this.y = cellSize * randomInt(mainCanvas.height / cellSize);
     }
 
+    /**Draws the apple in the current context */
     show() {
         ctx.fillStyle = '#FACF13';
         ctx.fillRect(this.x + 1, this.y + 1, cellSize - 2, cellSize - 2);
     }
 
+    /**Places the apple in a random position, validating that it doesn't
+     * overlap a position currently occupied by a snake.
+     */
     randomPos(snake1, snake2) {
         let posiblePos = [];
         for (let i = 0; i < mainCanvas.height / cellSize; i++) {
@@ -96,18 +137,26 @@ class Apple {
             }
         }
         let selectedPos = randomInt(posiblePos.length - 1);
-        apple.x = posiblePos[selectedPos][0];
-        apple.y = posiblePos[selectedPos][1];
+        this.x = posiblePos[selectedPos][0];
+        this.y = posiblePos[selectedPos][1];
     }
 }
 
+/**Resets the game by creating new snake and apple objects and resetting the frameRate */
 function resetGame() {
     snake1 = new Snake(0, 0, '#C84191');
     snake2 = new Snake(nCells - 1, nCells - 1, '#594998');
     apple = new Apple();
     frameRate = 0;
+    gameOver = false;
 }
 
+/**Checks if the snake impacted with the border
+ *
+ * Parameters: snake (Snake)
+ *
+ * Returns: A boolean indicating if the snake collided with a border
+ */
 function checkCollisionBorder(snake) {
     return (
         snake.body[0][0] < 0 ||
@@ -117,6 +166,13 @@ function checkCollisionBorder(snake) {
     );
 }
 
+/**Checks if the snake impacted with a snake
+ *
+ * Parameters: s1 (Snake), s2 (Snake)
+ *
+ * Returns: A boolean indicating if the snake1 collided with itself or with
+ * snake2
+ */
 function checkCollisionSnake(s1, s2) {
     for (let i = 1; i < s1.size; i++) {
         if (JSON.stringify(s1.body[0]) == JSON.stringify(s1.body[i]))
@@ -129,6 +185,12 @@ function checkCollisionSnake(s1, s2) {
     return false;
 }
 
+/**Check if the snake's head is in the same position as the apple
+ *
+ * Parameters: snake(Snake)
+ *
+ * Returns: boolean
+ */
 function checkEatApple(snake) {
     if (snake.body[0][0] == apple.x && snake.body[0][1] == apple.y) {
         snake.body.push([0, 0]);
@@ -137,6 +199,13 @@ function checkEatApple(snake) {
     }
 }
 
+/**Main animation loop
+ *
+ * Validates if the current frame rate matches the speed. If it does, draws
+ * the current state and validates the game events (collisions and eating
+ * apples).
+ * It also checks if the game is over, and reports the winner.
+ */
 function draw() {
     if (frameRate == speed) {
         frameRate = 0;
@@ -164,16 +233,23 @@ function draw() {
     } else frameRate++;
     if (!gameOver) window.requestAnimationFrame(draw);
     else {
-        window.alert('Game over!');
+        let winner = null;
+        if (checkCollisionBorder(snake2) || checkCollisionSnake(snake2, snake1))
+            winner = 'snake1';
+        else winner = 'snake2';
+        window.alert('Game over! Winner: ' + winner);
     }
 }
 
+/**Resets the game and starts the main animation loop */
 function startGame() {
     resetGame();
-    gameOver = false;
     window.requestAnimationFrame(draw);
 }
 
+/**Temporary event listeners, these must be removed once the code execution
+ * is completed.
+ */
 document.addEventListener('keydown', function (dir) {
     //37:left 38:up 39:right 40:down
     if (dir.which == 37 && snake1.dir != 0) snake1.requestDir = 2;
@@ -188,3 +264,8 @@ document.addEventListener('keydown', function (dir) {
 
     if (dir.which == 32) startGame();
 });
+
+// module.exports = {
+//     Snake,
+//     Apple,
+// };

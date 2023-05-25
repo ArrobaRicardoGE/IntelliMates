@@ -11,4 +11,8 @@ describe('GET /sandbox', () => {
         expect(response.text).toMatch(/monaco-editor/i);
         expect(response.text).toMatch(/python/i);
     });
+    test('Sandbox conatins game', async () => {
+        const response = await request(app).get('/sandbox');
+        expect(response.text).toMatch(/mainGame/i);
+    });
 });
