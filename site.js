@@ -25,20 +25,26 @@ const logger = bunyan.createLogger({
 /**
  * Instantiate the app.
  *
- * Uses: json, url encoding and EJS engine.
+ * Uses: json, url encoding, EJS engine, an static directory and serves the
+ * monaco editor package from node_modules
  */
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('static'));
+app.use(
+    '/monaco-editor',
+    express.static(__dirname + '/node_modules/monaco-editor')
+);
 
 app.set('view engine', 'ejs');
 
+// To load monaco stylesheet from client
 const monaco_css = `
 rel=stylesheet
 data-name=vs/editor/editor.main
-href=/monaco-editor-0.33.0/package/min/vs/editor/editor.main.css`;
+href=/monaco-editor/min/vs/editor/editor.main.css`;
 
 /**
  * GET /sandbox
