@@ -35,6 +35,11 @@ app.use(express.static('static'));
 
 app.set('view engine', 'ejs');
 
+const monaco_css = `
+rel=stylesheet
+data-name=vs/editor/editor.main
+href=/monaco-editor-0.33.0/package/min/vs/editor/editor.main.css`;
+
 /**
  * GET /sandbox
  *
@@ -42,7 +47,7 @@ app.set('view engine', 'ejs');
  */
 app.get('/sandbox', (request, response) => {
     logger.info('Access to sandbox', request.ip);
-    response.render('sandbox', { title: 'Sandbox' });
+    response.render('sandbox', { title: 'Sandbox', other_links: monaco_css });
 });
 
 module.exports = app;

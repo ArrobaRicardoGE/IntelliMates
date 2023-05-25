@@ -6,4 +6,9 @@ describe('GET /sandbox', () => {
         const response = await request(app).get('/sandbox');
         expect(response.status).toBe(200);
     });
+    test('Sandbox contains editor and supports python', async () => {
+        const response = await request(app).get('/sandbox');
+        expect(response.text).toMatch(/monaco-editor/i);
+        expect(response.text).toMatch(/python/i);
+    });
 });
