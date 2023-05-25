@@ -1,6 +1,13 @@
 const mainCanvas = document.getElementById('mainGame');
+const nCells = 30;
+let canvasSize = Math.min(
+    mainCanvas.parentElement.offsetWidth,
+    mainCanvas.parentElement.offsetHeight
+);
+canvasSize -= canvasSize % nCells;
+mainCanvas.width = mainCanvas.height = canvasSize;
 const ctx = mainCanvas.getContext('2d');
-const cellSize = mainCanvas.width / 30;
+const cellSize = mainCanvas.width / nCells;
 const speed = 5;
 let snake1 = null,
     snake2 = null,
@@ -14,21 +21,22 @@ function randomInt(ub) {
 }
 
 class Snake {
-    constructor(x, y) {
+    constructor(x, y, color) {
         this.size = 1;
         this.body = [[cellSize * x, cellSize * y]];
         this.dir = 0;
         this.requestedDir = 0;
+        this.color = color;
     }
 
     show() {
-        let col = 0;
-        let init = 'rgb(';
+        // let col = 0;
+        // let init = 'rgb(';
         for (let i = 0; i < this.size; i++) {
-            let colorRes = '';
-            colorRes = init + col + ',' + col + ',255)';
-            col = Math.min(col + 5, 255);
-            ctx.fillStyle = colorRes;
+            // let colorRes = '';
+            // colorRes = init + col + ',' + col + ',255)';
+            // col = Math.min(col + 5, 255);
+            ctx.fillStyle = this.color;
             ctx.fillRect(
                 this.body[i][0] + 1,
                 this.body[i][1] + 1,
@@ -57,7 +65,7 @@ class Apple {
     }
 
     show() {
-        ctx.fillStyle = '#FFFB00';
+        ctx.fillStyle = '#FACF13';
         ctx.fillRect(this.x + 1, this.y + 1, cellSize - 2, cellSize - 2);
     }
 
@@ -94,8 +102,8 @@ class Apple {
 }
 
 function resetGame() {
-    snake1 = new Snake(0, 0);
-    snake2 = new Snake(24, 24);
+    snake1 = new Snake(0, 0, '#C84191');
+    snake2 = new Snake(nCells - 1, nCells - 1, '#594998');
     apple = new Apple();
     frameRate = 0;
 }
@@ -114,7 +122,7 @@ function checkCollisionSnake(s1, s2) {
         if (JSON.stringify(s1.body[0]) == JSON.stringify(s1.body[i]))
             return true;
     }
-    for (let i = 1; i < s2.size; i++) {
+    for (let i = 0; i < s2.size; i++) {
         if (JSON.stringify(s1.body[0]) == JSON.stringify(s2.body[i]))
             return true;
     }
@@ -132,7 +140,7 @@ function checkEatApple(snake) {
 function draw() {
     if (frameRate == speed) {
         frameRate = 0;
-        ctx.fillStyle = '#000000';
+        ctx.fillStyle = '#282A36';
         ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
         apple.show();
         snake1.dir = snake1.requestDir;
