@@ -1,5 +1,6 @@
 const express = require('express');
 const bunyan = require('bunyan');
+const sqlite3 = require('sqlite3').verbose();
 
 /**
  * Used for logging errors, warnings and information
@@ -40,6 +41,9 @@ app.use(
 
 app.set('view engine', 'ejs');
 
+/**Open the database */
+const db = new sqlite3.Database('intellimates.db');
+
 // To load monaco stylesheet from client
 const monaco_css = `
 rel=stylesheet
@@ -52,8 +56,20 @@ href=/monaco-editor/min/vs/editor/editor.main.css`;
  * Responds with the sandbox for IntelliMates.
  */
 app.get('/sandbox', (request, response) => {
-    logger.info('Access to sandbox', request.ip);
-    response.render('sandbox', { title: 'Sandbox', other_links: monaco_css });
+    // Query the algorithms from the database to show them in the sandbox page
+    db.all('SELECT * FROM `algorithms`', [], (err, rows) => {
+        if (err) {
+            logger.error(err);
+            response.status(500).send('Internal sever error');
+        } else {
+            logger.info('Access to sandbox', request.ip);
+            response.render('sandbox', {
+                title: 'Sandbox',
+                other_links: monaco_css,
+                algorithm_list: rows,
+            });
+        }
+    });
 });
 
 module.exports = app;
