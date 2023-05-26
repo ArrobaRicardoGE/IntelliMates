@@ -104,3 +104,5 @@ dist
 
 # Extras
 monaco-editor-*
+/scripts
+intellimates.db
