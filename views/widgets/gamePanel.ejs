@@ -1,9 +1,42 @@
 <!-- Game and editor -->
-<div style="padding: 20px; height: 80vh">
-    <div style="width: 50%; height: 100%; float: left; text-align: center">
+<div style="padding: 30px; height: 80vh">
+    <div style="width: 50%; height: 90%; float: left; text-align: center">
         <h2 class="text-light text-center">Juego</h2>
         <%- include('../games/snake.ejs') %>
+        <h5 class="text-light mt-3">Algoritmo</h5>
+        <div class="dropdown">
+            <button
+                id="dropdownMenuButton"
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style="width: 40%"
+            >
+                Selecciona un algoritmo
+            </button>
+            <ul class="dropdown-menu" style="width: 40%">
+                <% algorithm_list.forEach((algorithm) => { %>
+                <li>
+                    <a
+                        class="dropdown-item"
+                        onclick="updateDropdown('<%=algorithm.name%>')"
+                        ><%= algorithm.name %></a
+                    >
+                </li>
+                <% }); %>
+            </ul>
+        </div>
     </div>
+
+    <!-- Function to update the selected algorithm in the dropdown button -->
+    <script>
+        function updateDropdown(option) {
+            const dropdownButton =
+                document.getElementById('dropdownMenuButton');
+            dropdownButton.innerHTML = option;
+        }
+    </script>
 
     <div style="width: 50%; height: 100%; float: left">
         <h2 class="text-light text-center">Editor</h2>
