@@ -1,21 +1,21 @@
 import logging
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='player_commands.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def _get_game_status():
     r''' Reads a single number, the game status '''
     status = int(input())
     if(status == 500):
         logging.warning('Game status: 500, game error')
-    logging.inf('Game status: ' + str(status))
+    logging.info('Game status: ' + str(status))
     return status
 
 
 def _get_my_player_id():
     r''' Reads a single number, the player_id'''
     player_id = int(input())
-    logging.inf('Player id: ' + str(player_id))
+    logging.info('Player id: ' + str(player_id))
     return player_id
 
 def _get_players_alive():
