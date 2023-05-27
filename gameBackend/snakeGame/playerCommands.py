@@ -1,12 +1,21 @@
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 def _get_game_status():
     r''' Reads a single number, the game status '''
     status = int(input())
+    if(status == 500):
+        logging.warning('Game status: 500, game error')
+    logging.inf('Game status: ' + str(status))
     return status
 
 
 def _get_my_player_id():
     r''' Reads a single number, the player_id'''
     player_id = int(input())
+    logging.inf('Player id: ' + str(player_id))
     return player_id
 
 def _get_players_alive():
@@ -14,6 +23,7 @@ def _get_players_alive():
     spaces'''
     line = input()
     players_alive = list(map(int,line.split()))
+    logging.info('Number of players alive: ' + str(len(players_alive)))
     return players_alive
 
 def _get_world_dimensions():
@@ -74,6 +84,7 @@ def get_world():
         a value of 0 represents no wall, 
         a value of 1 represents a wall
     '''
+    logging.info('petition to read world map')
     world = {}
     world['game_status'] = _get_game_status()
     world['my_player_id'] = _get_my_player_id()
@@ -81,5 +92,7 @@ def get_world():
     world['world_dimensions'] = _get_world_dimensions()
     world['world_map'] = _get_world_map()
     world['world_walls'] = _get_world_walls()
+
+    logging.info('finished reading world map')
     return world
 
