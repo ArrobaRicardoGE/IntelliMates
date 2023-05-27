@@ -75,10 +75,11 @@ def get_world():
         a value of 1 represents a wall
     '''
     world = {}
-    word['game_status'] = _get_game_status()
+    world['game_status'] = _get_game_status()
     world['my_player_id'] = _get_my_player_id()
     world['players_alive'] = _get_players_alive()
     world['world_dimensions'] = _get_world_dimensions()
     world['world_map'] = _get_world_map()
     world['world_walls'] = _get_world_walls()
+    return world
 
