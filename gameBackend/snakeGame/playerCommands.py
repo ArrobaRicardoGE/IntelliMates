@@ -96,3 +96,11 @@ def get_world():
     logging.info('finished reading world map')
     return world
 
+def send_move(move):
+    r'''prints an integer:
+        -1 to move to the left.
+        1 to move to the right.
+        0 to continue moving forward'''
+    logging.info('sending move: ' + str(move))
+    print(move)
+
