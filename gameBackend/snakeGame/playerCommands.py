@@ -102,5 +102,5 @@ def send_move(move):
         1 to move to the right.
         0 to continue moving forward'''
     logging.info('sending move: ' + str(move))
-    print(move)
+    print(move, flush=True)
 

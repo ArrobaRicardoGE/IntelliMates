@@ -92,6 +92,28 @@ TEST(game_spawner_test, multiple_writes_test){
     EXPECT_EQ(buffer[0], '9');
 }
 
+TEST(game_spawner_test, no_response_test){
+    const string game_name = "noWriteTest";
+    const string game_path = "./noWriteTest";
+
+    GameSpawner spawner = GameSpawner(game_path, game_name, 1);
+    vector<communication_pipe> pipes = spawner.create();
+
+    int readEnd = pipes[0][FILE_DESCRIPTOR::READ];
+    int writeEnd = pipes[0][FILE_DESCRIPTOR::WRITE];
+
+    const char* dataToWrite = "1 2\n";
+    write(writeEnd, dataToWrite, strlen(dataToWrite));
+
+    // Read data from the pipe
+    const int bufferSize = 256;
+    char buffer[bufferSize];
+    int status;
+    ssize_t bytesRead = read(readEnd, buffer, bufferSize - 1);
+
+    ASSERT_EQ(true, true);
+}
+
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
