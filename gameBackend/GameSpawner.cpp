@@ -12,6 +12,8 @@ namespace backend{
     std::vector<communication_pipe> GameSpawner::create(){
         std::vector<communication_pipe> all_pipes(2*number_players);
         for(int i=0; i<number_players; i++){
+            pipe(all_pipes[i*2]);
+            pipe(all_pipes[i*2+1]);
             pid_t process_id = fork();
             if(process_id == 0){
                 // child process
@@ -28,13 +30,14 @@ namespace backend{
                 // duplicate the read and write end.
                 dup2(all_pipes[2*i][FILE_DESCRIPTOR::READ], STDIN_FILENO);
                 dup2(all_pipes[2*i+1][FILE_DESCRIPTOR::WRITE], STDOUT_FILENO);
-
                 // close remaining pipes
-                close(all_pipes[2*i][FILE_DESCRIPTOR::WRITE]);
-                close(all_pipes[2*i+1][FILE_DESCRIPTOR::READ]);
+                //close(all_pipes[2*i][FILE_DESCRIPTOR::WRITE]);
+                //close(all_pipes[2*i+1][FILE_DESCRIPTOR::READ]);
 
-                execl(game_path.c_str(), game_name.c_str(), NULL);
+                int a = execl(game_path.c_str(), game_name.c_str(), NULL);
+                exit(0);
             }
+
             LOG(INFO) << "Forked process with pid: " << process_id;
         }
 
