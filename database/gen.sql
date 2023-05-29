@@ -9,6 +9,14 @@ CREATE TABLE IF NOT EXISTS `games`(
     `api_filepath` TEXT 
 );
 
+CREATE TABLE IF NOT EXISTS `users`(
+    `user_id` INTEGER PRIMARY KEY,
+    `username` TEXT UNIQUE, 
+    `email` TEXT,
+    `password` TEXT,
+    `created_on` INTEGER
+);
+
 CREATE TABLE IF NOT EXISTS `algorithms`(
     `algorithm_id` INTEGER PRIMARY KEY,
     `name` TEXT,
@@ -17,7 +25,5 @@ CREATE TABLE IF NOT EXISTS `algorithms`(
     `filepath` TEXT,
     `submitted_on` INTEGER,
     FOREIGN KEY(`game_id`) REFERENCES `games`(`game_id`)
-    -- Must add reference to owner_id once the table is created
+    FOREIGN KEY(`owner_id`) REFERENCES `users`(`user_id`)
 );
-
- 

@@ -38,4 +38,16 @@ describe('Connection to database', () => {
             }
         });
     });
+    test('Query users', (done) => {
+        db.all('SELECT * FROM `users`', [], (err, rows) => {
+            try {
+                expect(err).toBe(null);
+                expect(rows.length).toBeGreaterThanOrEqual(1);
+                expect(rows[0].username).toBe('test');
+                done();
+            } catch (error) {
+                done(error);
+            }
+        });
+    });
 });
