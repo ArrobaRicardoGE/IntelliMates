@@ -7,6 +7,7 @@
         <div class="dropdown">
             <button
                 id="dropdownMenuButton"
+                algorithm-id=""
                 class="btn btn-secondary dropdown-toggle"
                 type="button"
                 data-bs-toggle="dropdown"
@@ -20,7 +21,7 @@
                 <li>
                     <a
                         class="dropdown-item"
-                        onclick="updateDropdown('<%=algorithm.name%>')"
+                        onclick="updateDropdown('<%=algorithm.name%>', '<%=algorithm.algorithm_id %>')"
                         ><%= algorithm.name %></a
                     >
                 </li>
@@ -31,15 +32,25 @@
 
     <!-- Function to update the selected algorithm in the dropdown button -->
     <script>
-        function updateDropdown(option) {
+        function updateDropdown(option, algorithm_id) {
             const dropdownButton =
                 document.getElementById('dropdownMenuButton');
             dropdownButton.innerHTML = option;
+            dropdownButton.setAttribute('algorithm-id', algorithm_id);
         }
     </script>
 
     <div style="width: 50%; height: 100%; float: left">
-        <h2 class="text-light text-center">Editor</h2>
+        <h2 class="text-light text-center">
+            Editor
+            <button
+                id="runButton"
+                class="btn btn-outline-light"
+                onclick="runCode()"
+            >
+                <i class="bi bi-play-fill"></i>
+            </button>
+        </h2>
         <div
             id="editorContainer"
             style="
@@ -52,4 +63,38 @@
             <%- include('editor.ejs') %>
         </div>
     </div>
+
+    <!--Function for code execution. First, it has to fetch the selected 
+        algorithm's id and implemented code. Then it sends it to the 
+        executor -->
+    <script>
+        function runCode() {
+            const algorithm_id = document
+                .getElementById('dropdownMenuButton')
+                .getAttribute('algorithm-id');
+            if (!algorithm_id || algorithm_id == '') {
+                window.alert(
+                    'Selecciona un algoritmo para probar tu código e intenta de nuevo'
+                );
+                return;
+            }
+            const code = editor.getValue();
+            const button = document.getElementById('runButton');
+            button.innerHTML =
+                '<div class="spinner-border spinner-border-sm" role="status"></div>';
+            fetch(
+                `runner?aid=${algorithm_id}&code=${encodeURIComponent(
+                    editor.getValue()
+                )}`
+            )
+                .then((response) => response.json())
+                .then((json) => {
+                    window.alert(json['aid']);
+                    alert(json['code']);
+                })
+                .finally(() => {
+                    button.innerHTML = '<i class="bi bi-play-fill"></i>';
+                });
+        }
+    </script>
 </div>

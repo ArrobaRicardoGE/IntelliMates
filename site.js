@@ -51,10 +51,23 @@ data-name=vs/editor/editor.main
 href=/monaco-editor/min/vs/editor/editor.main.css`;
 
 /**
+ * GET /landpage
+ *
+ * Responds with the landpage for IntelliMates.
+ */
+
+app.use('/landing_assets', express.static(__dirname + '/landing_assets'));
+
+app.get('/', (request, response) => {
+    response.render('landing');
+});
+
+/**
  * GET /sandbox
  *
  * Responds with the sandbox for IntelliMates.
  */
+
 app.get('/sandbox', (request, response) => {
     // Query the algorithms from the database to show them in the sandbox page
     db.all('SELECT * FROM `algorithms`', [], (err, rows) => {
@@ -89,6 +102,21 @@ app.get('/juegos', (request, response) => {
                 other_links: null,
             });
         }
+    });
+});
+/**
+ * GET /runner
+ *
+ * Starts code execution and returns the resulting simulation.
+ */
+app.get('/runner', (request, response) => {
+    // Temporarily, this just returns whatever was sent in json
+    // The sleep is used to simulate the execution (whatever it may take)
+    function sleep(time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+    }
+    sleep(3000).then(() => {
+        response.json({ aid: request.query.aid, code: request.query.code });
     });
 });
 
