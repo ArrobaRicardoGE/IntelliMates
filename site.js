@@ -51,15 +51,43 @@ data-name=vs/editor/editor.main
 href=/monaco-editor/min/vs/editor/editor.main.css`;
 
 /**
+ * USE /assets
+ *
+ * Praparing middleware folders.
+ */
+
+app.use('/landing_assets', express.static(__dirname + '/landing_assets'));
+app.use('/login_assets', express.static(__dirname + '/login_assets'));
+app.use('/signup_assets', express.static(__dirname + '/signup_assets'));
+
+/**
  * GET /landpage
  *
  * Responds with the landpage for IntelliMates.
  */
 
-app.use('/landing_assets', express.static(__dirname + '/landing_assets'));
-
 app.get('/', (request, response) => {
     response.render('landing');
+});
+
+/**
+ * GET /login
+ *
+ * Responds with the log in page for IntelliMates.
+ */
+
+app.get('/login', (request, response) => {
+    response.render('log_in');
+});
+
+/**
+ * GET /signup
+ *
+ * Responds with the log in page for IntelliMates.
+ */
+
+app.get('/signup', (request, response) => {
+    response.render('signup');
 });
 
 /**
