@@ -50,18 +50,13 @@ rel=stylesheet
 data-name=vs/editor/editor.main
 href=/monaco-editor/min/vs/editor/editor.main.css`;
 
-
 /**
  * GET /landpage
  *
  * Responds with the landpage for IntelliMates.
  */
 
-
-app.use(
-    '/landing_assets',
-    express.static(__dirname + '/landing_assets')
-);
+app.use('/landing_assets', express.static(__dirname + '/landing_assets'));
 
 app.get('/', (request, response) => {
     response.render('landing');
@@ -90,6 +85,25 @@ app.get('/sandbox', (request, response) => {
     });
 });
 
+/**GET /juegos
+ *
+ * Renders the game view page
+ */
+app.get('/juegos', (request, response) => {
+    db.all('SELECT * FROM `games`', [], (err, rows) => {
+        if (err) {
+            logger.error(err);
+            response.status(500).send('Internal sever error');
+        } else {
+            logger.info('Access to game page', request.ip);
+            response.render('gamelist', {
+                title: 'Games',
+                game_list: rows,
+                other_links: null,
+            });
+        }
+    });
+});
 /**
  * GET /runner
  *
