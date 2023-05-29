@@ -72,4 +72,24 @@ app.get('/sandbox', (request, response) => {
     });
 });
 
+/**GET /juegos
+ *
+ * Renders the game view page
+ */
+app.get('/juegos', (request, response) => {
+    db.all('SELECT * FROM `games`', [], (err, rows) => {
+        if (err) {
+            logger.error(err);
+            response.status(500).send('Internal sever error');
+        } else {
+            logger.info('Access to game page', request.ip);
+            response.render('gamelist', {
+                title: 'Games',
+                game_list: rows,
+                other_links: null,
+            });
+        }
+    });
+});
+
 module.exports = app;

@@ -12,7 +12,9 @@
             crossorigin="anonymous"
         />
         <!-- Other links -->
+        <% if(other_links) {%>
         <link <%=other_links %> />
+        <% } %>
         <title>IntelliMates | <%=title%></title>
     </head>
     <body class="bg-dark">

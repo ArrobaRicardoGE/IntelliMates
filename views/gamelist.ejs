@@ -1,0 +1,22 @@
+<%- include('widgets/header.ejs') %>
+
+<h1 class="text-light text-center mt-3">Juegos disponibles</h1>
+
+<div class="container mt-5">
+    <!-- Display all the games in cards -->
+    <% game_list.forEach(game => { %>
+    <div class="card text-bg-dark text-center">
+        <div class="card-header">
+            <h4 class="card-title"><%=game.name%></h4>
+        </div>
+        <div class="card-body">
+            <p class="card-text"><%=game.description%></p>
+            <a href="/sandbox?gid=<%=game.game_id%>" class="btn btn-success"
+                >Jugar!</a
+            >
+        </div>
+    </div>
+    <% }); %>
+</div>
+
+<%=game_list %> <%-include('widgets/footer.ejs') %>
