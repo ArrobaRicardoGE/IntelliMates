@@ -60,7 +60,7 @@ href=/monaco-editor/min/vs/editor/editor.main.css`;
 
 app.use(
     '/landing_assets',
-    express.static(__dirname + 'landing_assets')
+    express.static(__dirname + '/landing_assets')
 );
 
 app.get('/', (request, response) => {
@@ -72,7 +72,7 @@ app.get('/', (request, response) => {
  *
  * Responds with the sandbox for IntelliMates.
  */
-/*
+
 app.get('/sandbox', (request, response) => {
     // Query the algorithms from the database to show them in the sandbox page
     db.all('SELECT * FROM `algorithms`', [], (err, rows) => {
@@ -89,5 +89,5 @@ app.get('/sandbox', (request, response) => {
         }
     });
 });
-*/
+
 module.exports = app;
