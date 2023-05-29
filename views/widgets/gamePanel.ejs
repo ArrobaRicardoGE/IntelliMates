@@ -43,7 +43,11 @@
     <div style="width: 50%; height: 100%; float: left">
         <h2 class="text-light text-center">
             Editor
-            <button class="btn btn-outline-light" onclick="runCode()">
+            <button
+                id="runButton"
+                class="btn btn-outline-light"
+                onclick="runCode()"
+            >
                 <i class="bi bi-play-fill"></i>
             </button>
         </h2>
@@ -60,7 +64,9 @@
         </div>
     </div>
 
-    <!-- Function for code execution. First, it has to fetch the selected algorithm's id and then  -->
+    <!--Function for code execution. First, it has to fetch the selected 
+        algorithm's id and implemented code. Then it sends it to the 
+        executor -->
     <script>
         function runCode() {
             const algorithm_id = document
@@ -72,6 +78,23 @@
                 );
                 return;
             }
+            const code = editor.getValue();
+            const button = document.getElementById('runButton');
+            button.innerHTML =
+                '<div class="spinner-border spinner-border-sm" role="status"></div>';
+            fetch(
+                `runner?aid=${algorithm_id}&code=${encodeURIComponent(
+                    editor.getValue()
+                )}`
+            )
+                .then((response) => response.json())
+                .then((json) => {
+                    window.alert(json['aid']);
+                    alert(json['code']);
+                })
+                .finally(() => {
+                    button.innerHTML = '<i class="bi bi-play-fill"></i>';
+                });
         }
     </script>
 </div>

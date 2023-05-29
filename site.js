@@ -72,4 +72,20 @@ app.get('/sandbox', (request, response) => {
     });
 });
 
+/**
+ * GET /runner
+ *
+ * Starts code execution and returns the resulting simulation.
+ */
+app.get('/runner', (request, response) => {
+    // Temporarily, this just returns whatever was sent in json
+    // The sleep is used to simulate the execution (whatever it may take)
+    function sleep(time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+    }
+    sleep(3000).then(() => {
+        response.json({ aid: request.query.aid, code: request.query.code });
+    });
+});
+
 module.exports = app;
