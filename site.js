@@ -80,7 +80,7 @@ app.get('/', (request, response) => {
  */
 
 app.get('/login', (request, response) => {
-    response.render('log_in');
+    response.render('log_in', { error: request.query.success });
 });
 
 /**
