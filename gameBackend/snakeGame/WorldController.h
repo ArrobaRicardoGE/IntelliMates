@@ -23,7 +23,8 @@ namespace backend::snake{
             WorldController(
                     int number_of_players,
                     std::vector<PipeWrapper> communication_pipes,
-                    int read_timeout);
+                    int read_timeout,
+                    int max_number_of_moves);
 
             void build_world_from_file(std::string world_file);
 
@@ -60,6 +61,7 @@ namespace backend::snake{
             int number_of_players;
             std::vector<PipeWrapper> communication_pipes;
             int read_timeout;
+            int max_number_of_moves;
 
             int rows;
             int columns;

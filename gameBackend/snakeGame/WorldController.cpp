@@ -11,10 +11,12 @@ namespace backend::snake{
     WorldController::WorldController(
             int number_of_players,
             std::vector<PipeWrapper> communication_pipes,
-            int read_timeout) : 
+            int read_timeout,
+            int max_number_of_moves) : 
         number_of_players(number_of_players),
         communication_pipes(communication_pipes),
-        read_timeout(read_timeout) {
+        read_timeout(read_timeout),
+        max_number_of_moves(max_number_of_moves) {
             game_turns.resize(number_of_players);
             snake_grow.resize(number_of_players);
             snake_status.resize(number_of_players);
@@ -250,7 +252,9 @@ namespace backend::snake{
     }
 
     void WorldController::run_game(){
-        while(1){
+        int moves = 0;
+        while(moves < max_number_of_moves){
+            moves++;
             int number_alive = 0;
             for(int i=0; i<number_of_players; i++){
                 if(snakes[i].is_alive()) number_alive++;
@@ -272,6 +276,9 @@ namespace backend::snake{
 
             run_turn();
         }
+        status = 100;
+        send_players_world_info();
+        return;
     }
 
     void WorldController::write_events(std::string events_file){
