@@ -195,4 +195,44 @@ app.post('/register', (request, response) => {
     }
 });
 
+/**
+ * POST /auth
+ *
+ * Performs user authentication by:
+ *  - Validating that all fields were captured
+ *  - Verifying that they match the record in the database
+ *  - Creating the session and storing the username
+ *  - Redirecting to index page
+ */
+app.post('/auth', (request, response) => {
+    let username = request.body.username;
+    let password = request.body.password;
+
+    if (username && password) {
+        db.all(
+            'SELECT * FROM `users` WHERE `username` = ? AND `password` = ?',
+            [username, password],
+            function (err, rows) {
+                if (err) {
+                    logger.error('Unable to reach database', err);
+                    throw err;
+                }
+                if (rows && rows.length > 0) {
+                    logger.info('Succesful authentication for user', username);
+                    request.session.loggedin = true;
+                    request.session.username = username;
+                    response.redirect('/juegos');
+                } else {
+                    logger.warn('Authentication failed for user', username);
+                    response.redirect('/login?success=false');
+                }
+                response.end();
+            }
+        );
+    } else {
+        response.redirect('/login?success=false');
+        response.end();
+    }
+});
+
 module.exports = app;
