@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const bunyan = require('bunyan');
 const sqlite3 = require('sqlite3').verbose();
 
@@ -26,8 +27,8 @@ const logger = bunyan.createLogger({
 /**
  * Instantiate the app.
  *
- * Uses: json, url encoding, EJS engine, an static directory and serves the
- * monaco editor package from node_modules
+ * Uses: json, url encoding, EJS engine, session management, an static
+ * directory and serves the monaco editor package from node_modules
  */
 const app = express();
 
@@ -44,6 +45,14 @@ app.use(
 );
 
 app.set('view engine', 'ejs');
+
+app.use(
+    session({
+        secret: 'superdupersecuresecret',
+        resave: true,
+        saveUninitialized: true,
+    })
+);
 
 /**Open the database */
 const db = new sqlite3.Database('intellimates.db');
@@ -81,7 +90,7 @@ app.get('/login', (request, response) => {
  */
 
 app.get('/signup', (request, response) => {
-    response.render('signup');
+    response.render('signup', { status: request.query.status });
 });
 
 /**
@@ -140,6 +149,50 @@ app.get('/runner', (request, response) => {
     sleep(3000).then(() => {
         response.json({ aid: request.query.aid, code: request.query.code });
     });
+});
+
+/**
+ * POST /register
+ *
+ * Registers new users by:
+ *  - Validating that all fields were captured
+ *  - Validating that password verification matches
+ *  - Writing to database and checking for any errors (i.e. username taken)
+ */
+app.post('/register', (request, response) => {
+    let username = request.body.username;
+    let email = request.body.email;
+    let password1 = request.body.password1;
+    let password2 = request.body.password2;
+    if (username && email && password1 && password2) {
+        if (password1 != password2) {
+            response.redirect('/signup?status=1');
+            response.end();
+            // response.status(701).send();
+            return;
+        }
+        db.run(
+            'INSERT INTO `users` (username, password, email, created_on) VALUES (?, ?, ?, unixepoch())',
+            [username, password1, email],
+            function (err, rows) {
+                if (err) {
+                    logger.error('Unable to write record to the database');
+                    response.redirect('/signup?status=2');
+                    response.end();
+                    // response.status(702).send();
+                    return;
+                }
+                logger.info('Succesful sign up for new user', username);
+                // response.status(200).send();
+                response.redirect('/signup?status=3');
+                response.end();
+            }
+        );
+    } else {
+        response.redirect('/signup?status=0');
+        response.end();
+        // response.status(700).send();
+    }
 });
 
 module.exports = app;
