@@ -80,7 +80,7 @@ app.get('/', (request, response) => {
  */
 
 app.get('/login', (request, response) => {
-    response.render('log_in');
+    response.render('log_in', { error: request.query.success });
 });
 
 /**
@@ -100,6 +100,11 @@ app.get('/signup', (request, response) => {
  */
 
 app.get('/sandbox', (request, response) => {
+    if (!request.session.loggedin) {
+        response.redirect('/');
+        response.end();
+        return;
+    }
     // Query the algorithms from the database to show them in the sandbox page
     db.all('SELECT * FROM `algorithms`', [], (err, rows) => {
         if (err) {
@@ -111,6 +116,7 @@ app.get('/sandbox', (request, response) => {
                 title: 'Sandbox',
                 other_links: monaco_css,
                 algorithm_list: rows,
+                session: request.session,
             });
         }
     });
@@ -121,6 +127,11 @@ app.get('/sandbox', (request, response) => {
  * Renders the game view page
  */
 app.get('/juegos', (request, response) => {
+    if (!request.session.loggedin) {
+        response.redirect('/');
+        response.end();
+        return;
+    }
     db.all('SELECT * FROM `games`', [], (err, rows) => {
         if (err) {
             logger.error(err);
@@ -131,6 +142,7 @@ app.get('/juegos', (request, response) => {
                 title: 'Games',
                 game_list: rows,
                 other_links: null,
+                session: request.session,
             });
         }
     });
@@ -192,6 +204,47 @@ app.post('/register', (request, response) => {
         response.redirect('/signup?status=0');
         response.end();
         // response.status(700).send();
+    }
+});
+
+/**
+ * POST /auth
+ *
+ * Performs user authentication by:
+ *  - Validating that all fields were captured
+ *  - Verifying that they match the record in the database
+ *  - Creating the session and storing the username
+ *  - Redirecting to index page
+ */
+app.post('/auth', (request, response) => {
+    let username = request.body.username;
+    let password = request.body.password;
+
+    if (username && password) {
+        db.all(
+            'SELECT * FROM `users` WHERE `username` = ? AND `password` = ?',
+            [username, password],
+            function (err, rows) {
+                if (err) {
+                    logger.error('Unable to reach database', err);
+                    throw err;
+                }
+                if (rows && rows.length > 0) {
+                    logger.info('Succesful authentication for user', username);
+                    request.session.loggedin = true;
+                    request.session.username = username;
+                    request.session.uid = rows[0].user_id;
+                    response.redirect('/juegos');
+                } else {
+                    logger.warn('Authentication failed for user', username);
+                    response.redirect('/login?success=false');
+                }
+                response.end();
+            }
+        );
+    } else {
+        response.redirect('/login?success=false');
+        response.end();
     }
 });
 

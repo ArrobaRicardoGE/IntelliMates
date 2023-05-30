@@ -1,7 +1,6 @@
 const request = require('supertest');
 const app = require('../site');
 const sqlite3 = require('sqlite3').verbose();
-const util = require('util');
 
 describe('Sign up', () => {
     test('Incomplete fields', async () => {
