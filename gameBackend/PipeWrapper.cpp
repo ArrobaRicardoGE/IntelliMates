@@ -20,10 +20,10 @@ namespace backend{
 
     PipeWrapper::~PipeWrapper() {
         if (read_end != -1) {
-            close(read_end);
+            //close(read_end);
         }
         if (write_end != -1) {
-            close(write_end);
+            //close(write_end);
         }
     }
 
@@ -39,6 +39,10 @@ namespace backend{
             buffer.push_back(delimiter);
         }
         buffer = buffer + str;
+    }
+
+    void PipeWrapper::add_eol(){
+        buffer.push_back('\n');
     }
 
     void PipeWrapper::write_data() {

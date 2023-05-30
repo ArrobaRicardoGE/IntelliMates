@@ -4,6 +4,7 @@
 #include "../PipeWrapper.h"
 
 #include <map>
+#include <memory>
 #include <set>
 #include <string>
 #include <vector>
@@ -22,7 +23,7 @@ namespace backend::snake{
         public:
             WorldController(
                     int number_of_players,
-                    std::vector<PipeWrapper> communication_pipes,
+                    std::vector<std::unique_ptr<PipeWrapper>>&& communication_pipes,
                     int read_timeout,
                     int max_number_of_moves);
 
@@ -34,6 +35,7 @@ namespace backend::snake{
 
         
         private:
+            WorldController();
 
             
 
@@ -59,7 +61,7 @@ namespace backend::snake{
             int status=400;
 
             int number_of_players;
-            std::vector<PipeWrapper> communication_pipes;
+            std::vector<std::unique_ptr<PipeWrapper>> communication_pipes;
             int read_timeout;
             int max_number_of_moves;
 

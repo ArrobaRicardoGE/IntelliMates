@@ -95,6 +95,7 @@ def get_world():
     world['world_walls'] = _get_world_walls()
 
     logging.info('finished reading world map')
+    logging.info(str(world))
     return world
 
 def send_move(move):

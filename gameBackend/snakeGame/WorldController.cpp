@@ -4,17 +4,19 @@
 #include <deque>
 #include <glog/logging.h>
 #include <fstream>
+#include <iostream>
+#include <random>
 #include <vector>
 
 namespace backend::snake{
 
     WorldController::WorldController(
             int number_of_players,
-            std::vector<PipeWrapper> communication_pipes,
+            std::vector<std::unique_ptr<PipeWrapper>>&& communication_pipes,
             int read_timeout,
             int max_number_of_moves) : 
         number_of_players(number_of_players),
-        communication_pipes(communication_pipes),
+        communication_pipes(std::move(communication_pipes)),
         read_timeout(read_timeout),
         max_number_of_moves(max_number_of_moves) {
             game_turns.resize(number_of_players);
@@ -30,8 +32,10 @@ namespace backend::snake{
         }
 
         file >> rows >> columns;
+        int num; file >> num;
+        LOG(INFO) << "Read number of players";
 
-        std::vector<std::vector<coordinate>> snake_containers(number_of_players);
+        std::vector<std::vector<std::pair<int,coordinate>>> snake_containers(number_of_players);
         for(int i=0; i<rows; i++){
             for(int j=0; j<columns; j++){
                 int block_status=0;
@@ -44,9 +48,10 @@ namespace backend::snake{
                     LOG(ERROR) << "Invalid world map block with status: " << block_status;
                     continue;
                 }
-                snake_containers[idx].push_back({i,j});
+                snake_containers[idx].push_back({block_status,{i,j}});
             }
         }
+        LOG(INFO) << "FINISHED READING WORLD BLOCKS";
 
         for(int idx=0; idx<number_of_players; idx++){
             if(snake_containers[idx].size() == 0){
@@ -55,17 +60,22 @@ namespace backend::snake{
             std::sort(snake_containers[idx].begin(), snake_containers[idx].end());
             ORIENTATION snake_orientation = ORIENTATION::NORTH;
             if(snake_containers[idx].size() > 1){
-                snake_orientation = get_snake_orientation(snake_containers[idx][0], 
-                        snake_containers[idx][1]);
+                snake_orientation = get_snake_orientation(snake_containers[idx][0].second, 
+                        snake_containers[idx][1].second);
             }
 
             std::deque<coordinate> snake_deque;
-            for(coordinate& snake_coordinate : snake_containers[idx]){
-                snake_deque.push_back(snake_coordinate);
+            for(auto snake_coordinate : snake_containers[idx]){
+                snake_deque.push_back(snake_coordinate.second);
             }
+
+
 
             snakes.push_back(Snake(snake_deque, snake_orientation));
         }
+
+        LOG(INFO) << "FINISHED setting snakes";
+
 
         walls_matrix.resize(rows);
         for(int i=0; i<rows; i++){
@@ -115,7 +125,7 @@ namespace backend::snake{
         std::map<int,int> turns_move;
         for(int i=0; i<number_of_players; i++){
             if(snakes[i].is_alive() == false) continue;
-            std::string move_string = communication_pipes[i].read_data(read_timeout);
+            std::string move_string = communication_pipes[i]->read_data(read_timeout);
             if(move_string.empty()) snakes[i].kill();
             if(snakes[i].is_alive() == false) continue;
 
@@ -143,49 +153,79 @@ namespace backend::snake{
             }
         }
 
+
         for(coordinate coord: snake_food){
            world_map[coord.first][coord.second] = 20;
         } 
 
 
+
         for(int i=0; i<number_of_players; i++){
             //_get_game_status
-            communication_pipes[i].add(status, '\n');
+            communication_pipes[i]->add(status);
+            communication_pipes[i]->add_eol();
             //_get_my_player_id
-            communication_pipes[i].add(i+1, '\n');
+            communication_pipes[i]->add(i+1);
+            communication_pipes[i]->add_eol();
             //_get_players_alive
-            for(int idx: players_alive) communication_pipes[i].add(idx);
-            communication_pipes[i].add("\n",' ');
+            for(int idx: players_alive) communication_pipes[i]->add(idx);
+            communication_pipes[i]->add_eol();
             //_get_world_dimensions
-            communication_pipes[i].add(rows, ' ');
-            communication_pipes[i].add(columns, '\n');
+            communication_pipes[i]->add(rows);
+            communication_pipes[i]->add(columns);
+            communication_pipes[i]->add_eol();
 
+            //
             //_get_world_map
-            communication_pipes[i].add(rows, ' ');
-            communication_pipes[i].add(columns, '\n');
-            for(int i=0; i<rows; i++){ 
-                for(int j=0; j<columns; j++) communication_pipes[i].add(world_map[i][j]);
-                communication_pipes[i].add("\n", ' ');
+            communication_pipes[i]->add(rows);
+            communication_pipes[i]->add(columns);
+            communication_pipes[i]->add_eol();
+            for(int ii=0; ii<rows; ii++){
+                for(int j=0; j<columns; j++) communication_pipes[i]->add(world_map[ii][j]);
+                communication_pipes[i]->add_eol();
             }
 
             // _get_world_walls
-            communication_pipes[i].add(rows, ' ');
-            communication_pipes[i].add(columns, '\n');
-            for(int i=0; i<rows; i++){
+            communication_pipes[i]->add(rows);
+            communication_pipes[i]->add(columns);
+            communication_pipes[i]->add_eol();
+            for(int ii=0; ii<rows; ii++){
                 for(int j=0; j<columns; j++){
-                    communication_pipes[i].add(walls_matrix[i][j][WALL_DIRECTION::DOWN]);
-                    communication_pipes[i].add(walls_matrix[i][j][WALL_DIRECTION::LEFT]);
-                    communication_pipes[i].add(walls_matrix[i][j][WALL_DIRECTION::UP]);
-                    communication_pipes[i].add(walls_matrix[i][j][WALL_DIRECTION::RIGHT]);
-                    if(i != rows-1 && j != columns -1) communication_pipes[i].add("\n", ' ');
+                    communication_pipes[i]->add(walls_matrix[ii][j][WALL_DIRECTION::DOWN]);
+                    communication_pipes[i]->add(walls_matrix[ii][j][WALL_DIRECTION::LEFT]);
+                    communication_pipes[i]->add(walls_matrix[ii][j][WALL_DIRECTION::UP]);
+                    communication_pipes[i]->add(walls_matrix[ii][j][WALL_DIRECTION::RIGHT]);
+                    if(ii != rows-1 || j != columns-1) communication_pipes[i]->add_eol();
                 }
             }
-            communication_pipes[i].write_data();
+            communication_pipes[i]->write_data();
         }
     }
 
     coordinate WorldController::spawn_food(){
-        return {-1,-1};
+        std::set<coordinate> bad_coordinates;
+        for(int i=0; i<number_of_players; i++){
+            if(!snakes[i].is_alive()) continue;
+            auto snake_body = snakes[i].get_body();
+            for(auto coord : snake_body){
+                bad_coordinates.insert(coord);
+            }
+        }
+
+        std::random_device rd;  
+        std::mt19937 gen(rd()); 
+        std::uniform_int_distribution<int> dist(0, 1000000);
+        int spawn_rate = dist(gen);
+        if(spawn_rate % 4 != 0){
+           return {-1,-1};
+        }
+        int x = dist(gen)%rows;
+        int y = dist(gen)%columns;
+        coordinate new_food(x,y);
+        if(bad_coordinates.find(new_food) != bad_coordinates.end()) return {-1,-1};
+        if(snake_food.find(new_food) != snake_food.end()) return {-1,-1};
+        return new_food;
+
     }
 
     void WorldController::log_turn(
@@ -202,6 +242,7 @@ namespace backend::snake{
     }
 
     void WorldController::run_turn(){
+        
         send_players_world_info();
         auto players_move = get_players_move();
         std::map<int,bool> snake_grow;
@@ -248,6 +289,7 @@ namespace backend::snake{
         for(int i=0; i<number_of_players; i++) players_alive[i] = snakes[i].is_alive();
 
         coordinate food_coordinate = spawn_food();
+        if(food_coordinate.first != -1) snake_food.insert(food_coordinate);
         log_turn(players_move, snake_grow, players_alive, food_coordinate);
     }
 
@@ -282,13 +324,13 @@ namespace backend::snake{
     }
 
     void WorldController::write_events(std::string events_file){
-        std::ofstream file("output.txt");
+        std::ofstream file(events_file);
         file << game_turns[0].size() << ' ' << game_turns.size() << '\n';
         for(int i=0; i<game_turns[0].size(); i++){
             for(int j=0; j<number_of_players; j++){
                 file << game_turns[j][i] << ' ' << snake_grow[j][i] << ' ' << snake_status[j][i] << '\n';
             }
-            file << food_spawn_log[i].first << ' ' << food_spawn_log[i].second;
+            file << food_spawn_log[i].first << ' ' << food_spawn_log[i].second << '\n';
         }
         file << status << std::endl;
         file.close();

@@ -1,5 +1,7 @@
 #include "../GameSpawner.h"
 
+#include <chrono>
+#include <thread>
 #include <fstream>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
@@ -23,6 +25,9 @@ TEST(game_spawner_test, read_write_test){
     int writeEnd = pipes[0][FILE_DESCRIPTOR::WRITE];
 
     const char* dataToWrite = "1 2\n";
+    std::chrono::seconds duration(3);
+    std::this_thread::sleep_for(duration);
+
     write(writeEnd, dataToWrite, strlen(dataToWrite));
 
     // Read data from the pipe
