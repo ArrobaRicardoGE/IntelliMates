@@ -1,219 +1,208 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="Rafael Andrade" />
-    <title>Log In</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="/login_assets/assets/robo.ico" />
-    <!-- Font Awesome icons (free version)-->
-    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
-    <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/login_assets/css/styles.css" rel="stylesheet" />
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <meta name="description" content="" />
+        <meta name="author" content="Rafael Andrade" />
+        <title>Log In</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/landing/assets/robo.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script
+            src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"
+            crossorigin="anonymous"
+        ></script>
+        <!-- Google fonts-->
+        <link
+            href="https://fonts.googleapis.com/css?family=Montserrat:400,700"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/landing_style/css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav
+            class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top"
+            id="mainNav"
+        >
+            <div class="container">
+                <img
+                    class="masthead-avatar mb-5"
+                    src="/landing/assets/img/LogoWord.png"
+                    alt="..."
+                    width="200"
+                    height="50"
+                />
+                <!--<a class="navbar-brand" href="#page-top">IntelliMates</a>-->
 
-
-</head>
-<body id="page-top">
-    <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
-        <div class="container">
-            <img class="masthead-avatar mb-5" src="/login_assets/assets/img/LogoWord.png" alt="..." width="200" height="50"/>
-            <!--<a class="navbar-brand" href="#page-top">IntelliMates</a>-->
-            
-            <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                Menu
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/">Home</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/signup">Aún no tengo cuenta</a></li>
-                    
-                </ul>
-            </div>
-        </div>
-    </nav>
-    
-    <!-- Sección de contacto-->
-    <section class="page-section" id="contact">
-        <div class="container">
-            <!-- Contact Section Heading-->
-            <div class="divider-custom">
-                <div class="divider-custom-line"></div>
-                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                <div class="divider-custom-line"></div>
-            </div>
-            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Iniciar sesión</h2>
-            <!-- Icon Divider-->
-            
-            <!-- Contact Section Form-->
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-xl-7">
-                    <!-- * * * * * * * * * * * * * * *-->
-                    <!-- * * SB Forms Contact Form * *-->
-                    <!-- * * * * * * * * * * * * * * *-->
-                    <!-- This form is pre-integrated with SB Forms.-->
-                    <!-- To make this form functional, sign up at-->
-                    <!-- https://startbootstrap.com/solution/contact-forms-->
-                    <!-- to get an API token!-->
-                    <form id="contactForm" data-sb-form-api-token="API_TOKEN">
-                        
-                        <!-- Email address input-->
-                        <div class="form-floating mb-3">
-                            <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
-                            <label for="email">Correo electrónico</label>
-                            <div class="invalid-feedback" data-sb-feedback="email:required">Se requiere un email.</div>
-                            <div class="invalid-feedback" data-sb-feedback="email:email">Email inválido.</div>
-                        </div>
-                        <!-- Phone number input-->
-                        <div class="form-floating mb-3">
-                            <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                            <label for="phone">Contraseña</label>
-                            <div class="invalid-feedback" data-sb-feedback="phone:required">Se requiere una contraseña.</div>
-                        </div>
-                        <!-- Message input-->
-                        
-                        <!-- Submit success message-->
-                        <!---->
-                        <!-- This is what your users will see when the form-->
-                        <!-- has successfully submitted-->
-                        <div class="d-none" id="submitSuccessMessage">
-                            <div class="text-center mb-3">
-                                <div class="fw-bolder">Redirigiendo..</div>
-                                Recuerda "Diseña algoritmos , programa tus sueños"
-                                <br />
-                                
-                            </div>
-                        </div>
-                        <!-- Submit error message-->
-                        <!---->
-                        <!-- This is what your users will see when there is-->
-                        <!-- an error submitting the form-->
-                        <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error enviando el mensaje</div></div>
-                        <!-- Submit Button-->
-                        <button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">Enviar</button>
-                    </form>
+                <button
+                    class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarResponsive"
+                    aria-controls="navbarResponsive"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item mx-0 mx-lg-1">
+                            <a
+                                class="nav-link py-3 px-0 px-lg-3 rounded"
+                                href="/"
+                                >Home</a
+                            >
+                        </li>
+                        <li class="nav-item mx-0 mx-lg-1">
+                            <a
+                                class="nav-link py-3 px-0 px-lg-3 rounded"
+                                href="/signup"
+                                >Aún no tengo cuenta</a
+                            >
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </section>
-    
-  
-    <!-- Copyright Section-->
-    <div class="copyright py-4 text-center text-white">
-        <div class="container"><small>Copyright &copy; IntelliMates 2023</small></div>
-    </div>
-    <!--Ventanas emergentes del portafolio-->
-    <!-- Ventana emergente 1-->
-    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body text-center pb-5">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <!-- Portfolio Modal - Title-->
-                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">¡Gracias UP!</h2>
-                                <!-- Icon Divider-->
-                                <div class="divider-custom">
-                                    <div class="divider-custom-line"></div>
-                                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                                    <div class="divider-custom-line"></div>
+        </nav>
+
+        <!-- Sección de contacto-->
+        <section class="page-section" id="contact">
+            <div class="container">
+                <!-- Contact Section Heading-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <h2
+                    class="page-section-heading text-center text-uppercase text-secondary mb-0"
+                >
+                    Iniciar sesión
+                </h2>
+                <!-- Icon Divider-->
+
+                <!-- Contact Section Form-->
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-xl-7">
+                        <!-- * * * * * * * * * * * * * * *-->
+                        <!-- * * SB Forms Contact Form * *-->
+                        <!-- * * * * * * * * * * * * * * *-->
+                        <!-- This form is pre-integrated with SB Forms.-->
+                        <!-- To make this form functional, sign up at-->
+                        <!-- https://startbootstrap.com/solution/contact-forms-->
+                        <!-- to get an API token!-->
+                        <form
+                            id="contactForm"
+                            data-sb-form-api-token="API_TOKEN"
+                        >
+                            <!-- Email address input-->
+                            <div class="form-floating mb-3">
+                                <input
+                                    class="form-control"
+                                    id="username"
+                                    type="text"
+                                    placeholder="patata123"
+                                    data-sb-validations="required"
+                                />
+                                <label for="username">Nombre de usuario</label>
+                                <div
+                                    class="invalid-feedback"
+                                    data-sb-feedback="username:required"
+                                >
+                                    Se requiere un email.
                                 </div>
-                                <!-- Portfolio Modal - Image-->
-                                <img class="img-fluid rounded mb-5" src="assets/img/up.jpg" alt="..." />
-                                <!-- Portfolio Modal - Text-->
-                                <p class="mb-4">Universidad Panamericana Campus Aguascalientes</p>
-                                <button class="btn btn-primary" aria-label="Close" data-bs-dismiss="modal">
-                                    <i class="fas fa-times fa-fw"></i>
-                                    Cerrar ventana
-                                </button>
+                                <div
+                                    class="invalid-feedback"
+                                    data-sb-feedback="username:email"
+                                >
+                                    Email inválido.
+                                </div>
                             </div>
-                        </div>
+                            <!-- Password input-->
+                            <div class="form-floating mb-3">
+                                <input
+                                    class="form-control"
+                                    id="password"
+                                    type="password"
+                                    placeholder="(123) 456-7890"
+                                    data-sb-validations="required"
+                                />
+                                <label for="password">Contraseña</label>
+                                <div
+                                    class="invalid-feedback"
+                                    data-sb-feedback="password:required"
+                                >
+                                    Se requiere una contraseña.
+                                </div>
+                            </div>
+                            <!-- Message input-->
+
+                            <!-- Submit success message-->
+                            <!---->
+                            <!-- This is what your users will see when the form-->
+                            <!-- has successfully submitted-->
+                            <div class="d-none" id="submitSuccessMessage">
+                                <div class="text-center mb-3">
+                                    <div class="fw-bolder">Redirigiendo..</div>
+                                    Recuerda "Diseña algoritmos , programa tus
+                                    sueños"
+                                    <br />
+                                </div>
+                            </div>
+                            <!-- Submit error message-->
+                            <!---->
+                            <!-- This is what your users will see when there is-->
+                            <!-- an error submitting the form-->
+                            <div class="d-none" id="submitErrorMessage">
+                                <div class="text-center text-danger mb-3">
+                                    Error enviando el mensaje
+                                </div>
+                            </div>
+                            <!-- Submit Button-->
+                            <button
+                                class="btn btn-primary btn-xl disabled"
+                                id="submitButton"
+                                type="submit"
+                            >
+                                Enviar
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Ventana emergente 2-->
-    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" aria-labelledby="portfolioModal2" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body text-center pb-5">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <!-- Portfolio Modal - Title-->
-                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">¡Gracias Equipo!</h2>
-                                <!-- Icon Divider-->
-                                <div class="divider-custom">
-                                    <div class="divider-custom-line"></div>
-                                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                                    <div class="divider-custom-line"></div>
-                                </div>
-                                <!-- Portfolio Modal - Image-->
-                                <img class="img-fluid rounded mb-5" src="assets/img/UniformesIntellimates.png" alt="..." />
-                                <!-- Portfolio Modal - Text-->
-                                <p class="mb-4">Sin ustedes esto no sería posible</p>
-                                <button class="btn btn-primary" aria-label="Close" data-bs-dismiss="modal">
-                                    <i class="fas fa-times fa-fw"></i>
-                                    Cerrar ventana
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Ventana emergente 3-->
-    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" aria-labelledby="portfolioModal3" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body text-center pb-5">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <!-- Portfolio Modal - Title-->
-                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">¡Gracias Encino!</h2>
-                                <!-- Icon Divider-->
-                                <div class="divider-custom">
-                                    <div class="divider-custom-line"></div>
-                                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                                    <div class="divider-custom-line"></div>
-                                </div>
-                                <!-- Portfolio Modal - Image-->
-                                <img class="img-fluid rounded mb-5" src="assets/img/encino.png" alt="..." />
-                                <!-- Portfolio Modal - Text-->
-                                <p class="mb-4">Colegio Encino</p>
-                                <button class="btn btn-primary" aria-label="Close" data-bs-dismiss="modal">
-                                    <i class="fas fa-times fa-fw"></i>
-                                    Cerrar ventana
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="/login_assets/js/scripts.js"></script>
-    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-    <!-- * *                               SB Forms JS                               * *-->
-    <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-</body>
+        <!-- Copyright Section-->
+        <div class="copyright py-4 text-center text-white">
+            <div class="container">
+                <small>Copyright &copy; IntelliMates 2023</small>
+            </div>
+        </div>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/landing_style/js/scripts.js"></script>
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    </body>
 </html>

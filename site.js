@@ -38,6 +38,10 @@ app.use(
     '/monaco-editor',
     express.static(__dirname + '/node_modules/monaco-editor')
 );
+app.use(
+    '/landing_style',
+    express.static(__dirname + '/node_modules/startbootstrap-freelancer/dist')
+);
 
 app.set('view engine', 'ejs');
 
@@ -49,16 +53,6 @@ const monaco_css = `
 rel=stylesheet
 data-name=vs/editor/editor.main
 href=/monaco-editor/min/vs/editor/editor.main.css`;
-
-/**
- * USE /assets
- *
- * Praparing middleware folders.
- */
-
-app.use('/landing_assets', express.static(__dirname + '/landing_assets'));
-app.use('/login_assets', express.static(__dirname + '/login_assets'));
-app.use('/signup_assets', express.static(__dirname + '/signup_assets'));
 
 /**
  * GET /landpage
