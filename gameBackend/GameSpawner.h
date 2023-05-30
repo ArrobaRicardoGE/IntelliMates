@@ -15,7 +15,7 @@ namespace backend{
     
     class GameSpawner{
         public:
-            GameSpawner(std::string game_path, std::string game_name, size_t number_players);
+            GameSpawner(std::vector<std::string> game_path, std::vector<std::string> game_name, size_t number_players);
             
             /* Creates *number_of_players* instances of the game,
              * and returns a list of pipes, one for each player
@@ -24,8 +24,8 @@ namespace backend{
         
         private:
             GameSpawner();
-            std::string game_path;
-            std::string game_name;
+            std::vector<std::string> game_path;
+            std::vector<std::string> game_name;
             size_t number_players;
     };
 }
