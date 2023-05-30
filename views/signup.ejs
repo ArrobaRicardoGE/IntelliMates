@@ -79,7 +79,6 @@
             </div>
         </nav>
 
-        <!-- Sección de contacto-->
         <section class="page-section" id="contact">
             <div class="container">
                 <!-- Contact Section Heading-->
@@ -96,133 +95,101 @@
                     Registro
                 </h2>
                 <!-- Icon Divider-->
-
-                <!-- Contact Section Form-->
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 col-xl-7">
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- * * SB Forms Contact Form * *-->
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- This form is pre-integrated with SB Forms.-->
-                        <!-- To make this form functional, sign up at-->
-                        <!-- https://startbootstrap.com/solution/contact-forms-->
-                        <!-- to get an API token!-->
-                        <form
-                            id="contactForm"
-                            data-sb-form-api-token="API_TOKEN"
-                        >
-                            <!-- Name input-->
-                            <div class="form-floating mb-3">
+                <div class="card text-center w-75 mx-auto mt-4">
+                    <div class="signup">
+                        <form action="/register" method="post">
+                            <div class="form-floating m-3">
                                 <input
+                                    type="text"
                                     class="form-control"
                                     id="username"
-                                    type="text"
-                                    placeholder="Enter your name..."
-                                    data-sb-validations="required"
+                                    name="username"
+                                    placeholder="Username"
+                                    required
                                 />
-                                <label for="username">Nombre de usuario</label>
-                                <div
-                                    class="invalid-feedback"
-                                    data-sb-feedback="username:required"
+                                <label for="username"
+                                    ><i class="fas fa-user"></i> Nombre de
+                                    usuario</label
                                 >
-                                    Por favor, escribe tu nombre o el de tu
-                                    empresa.
-                                </div>
                             </div>
-                            <!-- Email address input-->
-                            <div class="form-floating mb-3">
+                            <div class="form-floating m-3">
                                 <input
+                                    type="email"
                                     class="form-control"
                                     id="email"
-                                    type="email"
-                                    placeholder="name@example.com"
-                                    data-sb-validations="required,email"
+                                    name="email"
+                                    placeholder="Email"
+                                    required
                                 />
-                                <label for="email">Correo electrónico</label>
-                                <div
-                                    class="invalid-feedback"
-                                    data-sb-feedback="email:required"
+                                <label for="email"
+                                    ><i class="fas fa-envelope"></i> Correo
+                                    electrónico</label
                                 >
-                                    Se requiere un email.
-                                </div>
-                                <div
-                                    class="invalid-feedback"
-                                    data-sb-feedback="email:email"
-                                >
-                                    Email inválido.
-                                </div>
                             </div>
-                            <!-- Password input-->
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-3 mx-3">
                                 <input
+                                    type="password"
                                     class="form-control"
                                     id="password1"
-                                    type="password"
-                                    placeholder="password123"
-                                    data-sb-validations="required"
+                                    name="password1"
+                                    placeholder="Password"
+                                    required
                                 />
-                                <label for="password1">Contraseña</label>
-                                <div
-                                    class="invalid-feedback"
-                                    data-sb-feedback="password1:required"
+                                <label for="password1"
+                                    ><i class="fas fa-lock"></i>
+                                    Contraseña</label
                                 >
-                                    Se requiere una contraseña.
-                                </div>
                             </div>
-                            <!-- Message input-->
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-3 mx-3">
                                 <input
+                                    type="password"
                                     class="form-control"
                                     id="password2"
-                                    type="password"
-                                    placeholder="password123"
-                                    data-sb-validations="required"
+                                    name="password2"
+                                    placeholder="Repeat Password"
+                                    required
                                 />
                                 <label for="password2"
-                                    >Repetir contraseña</label
+                                    ><i class="fas fa-lock"></i> Repetir
+                                    Contraseña</label
                                 >
-                                <div
-                                    class="invalid-feedback"
-                                    data-sb-feedback="password2:required"
-                                >
-                                    Se requiere una contraseña.
-                                </div>
                             </div>
-                            <!-- Submit success message-->
-                            <!---->
-                            <!-- This is what your users will see when the form-->
-                            <!-- has successfully submitted-->
-                            <div class="d-none" id="submitSuccessMessage">
-                                <div class="text-center mb-3">
-                                    <div class="fw-bolder">Redirigiendo..</div>
-                                    Recuerda "Diseña algoritmos , programa tus
-                                    sueños"
-                                    <br />
-                                </div>
-                            </div>
-                            <!-- Submit error message-->
-                            <!---->
-                            <!-- This is what your users will see when there is-->
-                            <!-- an error submitting the form-->
-                            <div class="d-none" id="submitErrorMessage">
-                                <div class="text-center text-danger mb-3">
-                                    Error enviando el mensaje
-                                </div>
-                            </div>
-                            <!-- Submit Button-->
-                            <button
-                                class="btn btn-primary btn-xl disabled"
-                                id="submitButton"
-                                type="submit"
-                            >
-                                Enviar
+                            <button type="submit" class="btn btn-primary mb-3">
+                                Registrarse
                             </button>
+                            <% if(status == 1) { %>
+                            <div
+                                class="alert alert-danger mb-3 w-50 mx-auto"
+                                role="alert"
+                            >
+                                Las contraseñas no corresponden
+                            </div>
+                            <% } %> <% if(status == 2) { %>
+                            <div
+                                class="alert alert-danger mb-3 w-50 mx-auto"
+                                role="alert"
+                            >
+                                No se pudo completar el registro. Intenta con un
+                                nombre de usuario diferente.
+                            </div>
+                            <% } %> <% if(status == 3) { %>
+                            <div
+                                class="alert alert-success mb-3 w-50 mx-auto"
+                                role="alert"
+                            >
+                                ¡Cuenta registrada! Por favor, inicia sesión.
+                            </div>
+                            <% } %>
                         </form>
+                        <div class="card-footer">
+                            <a href="/login"
+                                >¿Ya tienes cuenta? Inicia sesión.</a
+                            >
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
-
         <!-- Copyright Section-->
         <div class="copyright py-4 text-center text-white">
             <div class="container">
@@ -238,6 +205,6 @@
         <!-- * *                               SB Forms JS                               * *-->
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <!-- <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script> -->
     </body>
 </html>

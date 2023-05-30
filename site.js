@@ -90,7 +90,7 @@ app.get('/login', (request, response) => {
  */
 
 app.get('/signup', (request, response) => {
-    response.render('signup');
+    response.render('signup', { status: request.query.status });
 });
 
 /**
@@ -166,9 +166,9 @@ app.post('/register', (request, response) => {
     let password2 = request.body.password2;
     if (username && email && password1 && password2) {
         if (password1 != password2) {
-            // response.redirect('/signup?status=1');
-            // response.end();
-            response.status(701).send();
+            response.redirect('/signup?status=1');
+            response.end();
+            // response.status(701).send();
             return;
         }
         db.run(
@@ -177,21 +177,21 @@ app.post('/register', (request, response) => {
             function (err, rows) {
                 if (err) {
                     logger.error('Unable to write record to the database');
-                    // response.redirect("/signup?status=2");
-                    // response.end();
-                    response.status(702).send();
+                    response.redirect('/signup?status=2');
+                    response.end();
+                    // response.status(702).send();
                     return;
                 }
                 logger.info('Succesful sign up for new user', username);
-                response.status(200).send();
-                // response.redirect("/signup?status=3");
-                // response.end();
+                // response.status(200).send();
+                response.redirect('/signup?status=3');
+                response.end();
             }
         );
     } else {
-        // response.redirect("/signup?status=0");
-        // response.end();
-        response.status(700).send();
+        response.redirect('/signup?status=0');
+        response.end();
+        // response.status(700).send();
     }
 });
 
