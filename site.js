@@ -38,6 +38,10 @@ app.use(
     '/monaco-editor',
     express.static(__dirname + '/node_modules/monaco-editor')
 );
+app.use(
+    '/landing_style',
+    express.static(__dirname + '/node_modules/startbootstrap-freelancer/dist')
+);
 
 app.set('view engine', 'ejs');
 
@@ -56,10 +60,28 @@ href=/monaco-editor/min/vs/editor/editor.main.css`;
  * Responds with the landpage for IntelliMates.
  */
 
-app.use('/landing_assets', express.static(__dirname + '/landing_assets'));
-
 app.get('/', (request, response) => {
     response.render('landing');
+});
+
+/**
+ * GET /login
+ *
+ * Responds with the log in page for IntelliMates.
+ */
+
+app.get('/login', (request, response) => {
+    response.render('log_in');
+});
+
+/**
+ * GET /signup
+ *
+ * Responds with the log in page for IntelliMates.
+ */
+
+app.get('/signup', (request, response) => {
+    response.render('signup');
 });
 
 /**
