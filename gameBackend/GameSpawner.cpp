@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace backend{
-    GameSpawner::GameSpawner(std::string game_path, std::string game_name, size_t number_players) : 
+    GameSpawner::GameSpawner(std::vector<std::string> game_path, std::vector<std::string> game_name, size_t number_players) : 
         game_path(game_path), game_name(game_name), number_players(number_players) {}
 
     std::vector<communication_pipe> GameSpawner::create(){
@@ -19,7 +19,7 @@ namespace backend{
                 // child process
                 
                 // close logger
-                google::ShutdownGoogleLogging();
+                //google::ShutdownGoogleLogging();
 
                 // close all pipes except the ones of this process
                 for(int j=0; j<2*i; j++){
@@ -34,7 +34,7 @@ namespace backend{
                 //close(all_pipes[2*i][FILE_DESCRIPTOR::WRITE]);
                 //close(all_pipes[2*i+1][FILE_DESCRIPTOR::READ]);
 
-                int a = execl(game_path.c_str(), game_name.c_str(), NULL);
+                int a = execlp("python3", "python3", game_path[i].c_str(),  NULL);
                 exit(0);
             }
 

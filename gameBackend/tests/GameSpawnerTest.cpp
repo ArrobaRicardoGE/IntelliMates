@@ -1,5 +1,7 @@
 #include "../GameSpawner.h"
 
+#include <chrono>
+#include <thread>
 #include <fstream>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
@@ -10,8 +12,11 @@ using namespace backend;
 using namespace std;
 
 TEST(game_spawner_test, read_write_test){
-    const string game_name = "singleWrite";
-    const string game_path = "./singleWriteTest";
+    const string s_game_name = "singleWrite";
+    const string s_game_path = "./singleWriteTest";
+
+    vector<string> game_path; game_path.push_back(s_game_path);
+    vector<string> game_name; game_name.push_back(s_game_name);
 
     GameSpawner spawner = GameSpawner(game_path, game_name, 1);
     vector<communication_pipe> pipes = spawner.create();
@@ -20,6 +25,9 @@ TEST(game_spawner_test, read_write_test){
     int writeEnd = pipes[0][FILE_DESCRIPTOR::WRITE];
 
     const char* dataToWrite = "1 2\n";
+    std::chrono::seconds duration(3);
+    std::this_thread::sleep_for(duration);
+
     write(writeEnd, dataToWrite, strlen(dataToWrite));
 
     // Read data from the pipe
@@ -32,9 +40,17 @@ TEST(game_spawner_test, read_write_test){
 }
 
 TEST(game_spawner_test, multiple_pipes_test){
-    const string game_name = "singleWriteTest";
-    const string game_path = "./singleWriteTest";
+    const string s_game_name = "singleWrite";
+    const string s_game_path = "./singleWriteTest";
+
+    vector<string> game_path; 
+    vector<string> game_name; 
     const int number_games=5;
+
+    for(int i=0; i<number_games; i++){
+        game_path.push_back(s_game_path);
+        game_name.push_back(s_game_name);
+    }
 
     GameSpawner spawner = GameSpawner(game_path, game_name, number_games);
     vector<communication_pipe> pipes = spawner.create();
@@ -63,8 +79,11 @@ TEST(game_spawner_test, multiple_pipes_test){
 }
 
 TEST(game_spawner_test, multiple_writes_test){
-    const string game_name = "multipleWritesTest";
-    const string game_path = "./multipleWritesTest";
+    const string s_game_name = "multipleWritesTest";
+    const string s_game_path = "./multipleWritesTest";
+
+    vector<string> game_path; game_path.push_back(s_game_path);
+    vector<string> game_name; game_name.push_back(s_game_name);
 
     GameSpawner spawner = GameSpawner(game_path, game_name, 1);
     vector<communication_pipe> pipes = spawner.create();
@@ -93,8 +112,11 @@ TEST(game_spawner_test, multiple_writes_test){
 }
 
 TEST(game_spawner_test, no_response_test){
-    const string game_name = "noWriteTest";
-    const string game_path = "./noWriteTest";
+    const string s_game_name = "noWriteTest";
+    const string s_game_path = "./noWriteTest";
+
+    vector<string> game_path; game_path.push_back(s_game_path);
+    vector<string> game_name; game_name.push_back(s_game_name);
 
     GameSpawner spawner = GameSpawner(game_path, game_name, 1);
     vector<communication_pipe> pipes = spawner.create();

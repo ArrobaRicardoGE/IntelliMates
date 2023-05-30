@@ -13,6 +13,7 @@ namespace backend{
              * one
              */
             void add(int number, char delimiter = ' ');
+            void add_eol();
             
             // Same behaviour as add(int number, ...) but with a string
             void add(std::string str, char delimiter = ' ');

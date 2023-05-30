@@ -70,6 +70,7 @@ def get_world():
     game_status: a number representing the game status
         400: game in progress
         500: game error
+        100: game tied, no winner
         [1,4]: meaning that player won
     my_player_id: return player id, a number from [1,4]
     players_alive: returns a list with the indices of players alive, indices go from [1,4]
@@ -94,6 +95,7 @@ def get_world():
     world['world_walls'] = _get_world_walls()
 
     logging.info('finished reading world map')
+    logging.info(str(world))
     return world
 
 def send_move(move):
