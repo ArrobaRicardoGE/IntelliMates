@@ -100,6 +100,11 @@ app.get('/signup', (request, response) => {
  */
 
 app.get('/sandbox', (request, response) => {
+    if (!request.session.loggedin) {
+        response.redirect('/');
+        response.end();
+        return;
+    }
     // Query the algorithms from the database to show them in the sandbox page
     db.all('SELECT * FROM `algorithms`', [], (err, rows) => {
         if (err) {
@@ -111,6 +116,7 @@ app.get('/sandbox', (request, response) => {
                 title: 'Sandbox',
                 other_links: monaco_css,
                 algorithm_list: rows,
+                session: request.session,
             });
         }
     });
@@ -121,6 +127,11 @@ app.get('/sandbox', (request, response) => {
  * Renders the game view page
  */
 app.get('/juegos', (request, response) => {
+    if (!request.session.loggedin) {
+        response.redirect('/');
+        response.end();
+        return;
+    }
     db.all('SELECT * FROM `games`', [], (err, rows) => {
         if (err) {
             logger.error(err);
@@ -131,6 +142,7 @@ app.get('/juegos', (request, response) => {
                 title: 'Games',
                 game_list: rows,
                 other_links: null,
+                session: request.session,
             });
         }
     });
@@ -221,6 +233,7 @@ app.post('/auth', (request, response) => {
                     logger.info('Succesful authentication for user', username);
                     request.session.loggedin = true;
                     request.session.username = username;
+                    request.session.uid = rows[0].user_id;
                     response.redirect('/juegos');
                 } else {
                     logger.warn('Authentication failed for user', username);
