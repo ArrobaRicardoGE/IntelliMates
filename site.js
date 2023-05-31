@@ -165,7 +165,7 @@ app.get('/runner', (request, response) => {
         'from playerCommands import get_world, send_move\n' + code,
         (err) => {
             if (err) {
-                console.log(err);
+                logger.error(err);
                 response.json({ err: err });
             } else {
                 logger.info('New file added', filename);
@@ -178,7 +178,7 @@ app.get('/runner', (request, response) => {
         [algorithm_id],
         (err, rows) => {
             if (err) {
-                console.log(err);
+                logger.error(err);
                 response.json({ err: err });
             } else {
                 const apath = rows[0].filepath;
@@ -194,16 +194,17 @@ app.get('/runner', (request, response) => {
                                 'utf-8',
                                 (err, data) => {
                                     if (err) {
-                                        console.log(err);
+                                        logger.error(err);
                                         response.json({ err: err });
                                         return;
                                     }
                                     response.json({ data: data });
                                 }
                             );
-                        } // else response.json({ err: 'Unexpected error' });
+                        }
                     },
                     (err) => {
+                        logger.error(err);
                         response.json({ err: err });
                     }
                 );

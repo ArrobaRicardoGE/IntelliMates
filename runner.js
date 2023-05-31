@@ -1,9 +1,20 @@
 const { spawn } = require('node:child_process');
 
+/**Converts from array buffer to string*/
 function ab2str(buf) {
     return String.fromCharCode.apply(null, new Uint16Array(buf));
 }
 
+/**
+ * Spawns a child process that runs the backend for the selected game.
+ *
+ * Parameters:  algorithm_path (string): path to the selected algorithms
+ *              output_path (string): path to the generated output file
+ *              callback_success (fn): callback to run when the process returns
+ *                  data or closes with status 1
+ *              callback_error (fn): callback to run when the process writes to
+ *                  stderr
+ */
 function run(
     algorithm1_path,
     algorithm2_path,
