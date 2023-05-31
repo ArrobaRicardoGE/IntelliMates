@@ -42,7 +42,7 @@ describe('Sign up', () => {
         const response = await request(app)
             .post('/register')
             .send({
-                username: 'test',
+                username: 'juju_test',
                 email: 'test@mail.com',
                 password1: 'abecedario11',
                 password2: 'abecedario11',
