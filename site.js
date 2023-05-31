@@ -155,22 +155,33 @@ app.get('/juegos', (request, response) => {
  * Starts code execution and returns the resulting simulation.
  */
 app.get('/runner', (request, response) => {
-    // Temporarily, this just returns whatever was sent in json
-    // The sleep is used to simulate the execution (whatever it may take)
-    // function sleep(time) {
-    //     return new Promise((resolve) => setTimeout(resolve, time));
-    // }
-    // sleep(3000).then(() => {
-    //     response.json({ aid: request.query.aid, code: request.query.code });
-    // });
+    const code = request.query.code;
+    const algorithm_id = request.query.algorithm_id;
 
+    // write code to file
+    const filename = `${request.session.uid}-${Date.now()}`;
+    fs.writeFile(
+        __dirname + `/usergen/algorithms/${filename}.py`,
+        'from playerCommands import get_world, send_move\n' + code,
+        (err) => {
+            if (err) {
+                console.log(err);
+                response.json({ err: err });
+            } else {
+                logger.info('New file added', filename);
+            }
+        }
+    );
+
+    // execute algorithms
     run(
         './snakeGame/DemoSnake.py',
-        './snakeGame/DemoSnakeLog.py',
+        `../usergen/algorithms/${filename}.py`,
+        `../usergen/output/${filename}.txt`,
         (out) => {
             if (out == 0) {
                 fs.readFile(
-                    __dirname + '/static/usergen/result.txt',
+                    __dirname + `/usergen/output/${filename}.txt`,
                     'utf-8',
                     (err, data) => {
                         if (err) {

@@ -7,6 +7,7 @@ function ab2str(buf) {
 function run(
     algorithm1_path,
     algorithm2_path,
+    output_path,
     callback_success,
     callback_error
 ) {
@@ -22,7 +23,7 @@ function run(
             './Main',
             '2',
             './snakeGame/worlds/world_30_30_2_players_corners.txt',
-            '../static/usergen/result.txt',
+            output_path,
             '2',
             '30',
             algorithm1_path,

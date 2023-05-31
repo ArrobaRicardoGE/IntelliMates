@@ -89,6 +89,7 @@
             )
                 .then((response) => response.json())
                 .then((json) => {
+                    window.alert(json['err']);
                     window.alert(json['data']);
                 })
                 .finally(() => {

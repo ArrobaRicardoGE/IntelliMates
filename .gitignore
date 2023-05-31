@@ -107,5 +107,4 @@ monaco-editor-*
 /scripts
 *.db
 __pycache__
-result.txt
-snake_output.txt
+usergen/
