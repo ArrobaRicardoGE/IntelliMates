@@ -43,6 +43,7 @@ namespace backend::snake{
         if(!grow){ 
             snake_body.pop_back();
         }
+        my_orientation = left_orientation[my_orientation];
     }
         
     void Snake::move_right(int N, int M, bool grow){
@@ -53,6 +54,7 @@ namespace backend::snake{
         if(!grow){ 
             snake_body.pop_back();
         }
+        my_orientation = right_orientation[my_orientation];
     }
 
     void Snake::move_front(int N, int M, bool grow){
