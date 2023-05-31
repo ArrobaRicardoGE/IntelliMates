@@ -68,6 +68,7 @@
         algorithm's id and implemented code. Then it sends it to the 
         executor -->
     <script>
+        let sim = null;
         function runCode() {
             const algorithm_id = document
                 .getElementById('dropdownMenuButton')
@@ -89,8 +90,15 @@
             )
                 .then((response) => response.json())
                 .then((json) => {
-                    window.alert(json['err']);
-                    window.alert(json['data']);
+                    if (json['err']) {
+                        window.alert(json['err']);
+                    } else {
+                        let str = json['data'];
+                        str = str.replaceAll('\n', '],[').replaceAll(' ', ',');
+                        str = '[[' + str.substring(0, str.length - 2) + ']';
+                        sim = JSON.parse(str);
+                        startGame();
+                    }
                 })
                 .finally(() => {
                     button.innerHTML = '<i class="bi bi-play-fill"></i>';

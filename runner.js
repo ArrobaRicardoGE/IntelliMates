@@ -25,7 +25,7 @@ function run(
             './snakeGame/worlds/world_30_30_2_players_corners.txt',
             output_path,
             '2',
-            '30',
+            '300',
             algorithm1_path,
             algorithm2_path,
         ],

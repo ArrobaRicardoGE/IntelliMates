@@ -32,10 +32,16 @@ const cellSize = mainCanvas.width / nCells;
 const speed = 5;
 let snake1 = null,
     snake2 = null,
-    apple = null;
+    apples = null;
 
 let gameOver = true;
 let frameRate = 0;
+let idxSim = 0;
+
+const UP = 3,
+    DOWN = 1,
+    RIGHT = 0,
+    LEFT = 2;
 
 /**Generate a random positive integer value in the range [0, ub] (inclusive)
  *
@@ -60,7 +66,7 @@ class Snake {
         this.size = 1;
         this.body = [[cellSize * x, cellSize * y]];
         this.dir = 0;
-        this.requestedDir = 0;
+        this.requestDir = 0;
         this.color = color;
     }
 
@@ -140,15 +146,32 @@ class Apple {
         this.x = posiblePos[selectedPos][0];
         this.y = posiblePos[selectedPos][1];
     }
+
+    setPos(x, y) {
+        this.x = cellSize * x;
+        this.y = cellSize * y;
+    }
 }
 
 /**Resets the game by creating new snake and apple objects and resetting the frameRate */
 function resetGame() {
-    snake1 = new Snake(0, 0, '#C84191');
+    snake1 = new Snake(0, nCells - 1, '#C84191');
     snake2 = new Snake(nCells - 1, nCells - 1, '#594998');
-    apple = new Apple();
+    snake1.dir = UP;
+    snake2.dir = UP;
+    snake1.requestDir = UP;
+    snake2.requestDir = UP;
+    apples = [];
     frameRate = 0;
     gameOver = false;
+    idxSim = 1;
+    ctx.fillStyle = '#282A36';
+    ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+    apples.forEach((apple) => {
+        apple.show();
+    });
+    snake1.show();
+    snake2.show();
 }
 
 /**Checks if the snake impacted with the border
@@ -191,12 +214,59 @@ function checkCollisionSnake(s1, s2) {
  *
  * Returns: boolean
  */
-function checkEatApple(snake) {
+function _checkEatApple(snake, apple) {
     if (snake.body[0][0] == apple.x && snake.body[0][1] == apple.y) {
         snake.body.push([0, 0]);
         snake.size++;
-        apple.randomPos(snake1, snake2);
+        return true;
     }
+}
+
+function checkEatApples(snake) {
+    let to_remove = -1;
+    for (let i = 0; i < apples.length; i++) {
+        if (_checkEatApple(snake, apples[i])) {
+            to_remove = i;
+            break;
+        }
+    }
+    if (to_remove != -1) {
+        apples.splice(to_remove, 1);
+    }
+}
+
+function requestDirChange(snake, dir) {
+    console.log(dir);
+    // right
+    if (dir == 1) {
+        if (snake.dir == UP) snake.requestDir = RIGHT;
+        if (snake.dir == RIGHT) snake.requestDir = DOWN;
+        if (snake.dir == DOWN) snake.requestDir = LEFT;
+        if (snake.dir == LEFT) snake.requestDir = UP;
+    }
+    // left
+    if (dir == -1) {
+        if (snake.dir == UP) snake.requestDir = LEFT;
+        if (snake.dir == LEFT) snake.requestDir = DOWN;
+        if (snake.dir == DOWN) snake.requestDir = RIGHT;
+        if (snake.dir == RIGHT) snake.requestDir = UP;
+    }
+}
+
+/**Update from the passed simulation */
+function requestStatusUpdate() {
+    if (idxSim >= sim.length) return;
+    if (sim[idxSim].length == 1 && sim[idxSim][0] == 500) {
+        alert('Runtime error');
+        gameOver = true;
+        return;
+    }
+    requestDirChange(snake1, sim[idxSim++][0]);
+    requestDirChange(snake2, sim[idxSim++][0]);
+    if (sim[idxSim][0] != -1) {
+        apples.push(new Apple(sim[idxSim][0], sim[idxSim][1]));
+    }
+    idxSim++;
 }
 
 /**Main animation loop
@@ -208,13 +278,18 @@ function checkEatApple(snake) {
  */
 function draw() {
     if (frameRate == speed) {
+        requestStatusUpdate();
         frameRate = 0;
         ctx.fillStyle = '#282A36';
         ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
-        apple.show();
+        apples.forEach((apple) => {
+            apple.show();
+        });
         snake1.dir = snake1.requestDir;
+        console.log('snake1', snake1.dir, snake1.requestDir);
         snake1.advance();
         snake2.dir = snake2.requestDir;
+        console.log('snake2', snake2.dir, snake2.requestDir);
         snake2.advance();
 
         gameOver = gameOver || checkCollisionBorder(snake1);
@@ -228,8 +303,8 @@ function draw() {
         snake2.show();
 
         //Eat apple
-        checkEatApple(snake1);
-        checkEatApple(snake2);
+        checkEatApples(snake1);
+        checkEatApples(snake2);
     } else frameRate++;
     if (!gameOver) window.requestAnimationFrame(draw);
     else {
@@ -246,24 +321,6 @@ function startGame() {
     resetGame();
     window.requestAnimationFrame(draw);
 }
-
-/**Temporary event listeners, these must be removed once the code execution
- * is completed.
- */
-document.addEventListener('keydown', function (dir) {
-    //37:left 38:up 39:right 40:down
-    if (dir.which == 37 && snake1.dir != 0) snake1.requestDir = 2;
-    if (dir.which == 38 && snake1.dir != 1) snake1.requestDir = 3;
-    if (dir.which == 39 && snake1.dir != 2) snake1.requestDir = 0;
-    if (dir.which == 40 && snake1.dir != 3) snake1.requestDir = 1;
-
-    if (dir.which == 65 && snake2.dir != 0) snake2.requestDir = 2;
-    if (dir.which == 87 && snake2.dir != 1) snake2.requestDir = 3;
-    if (dir.which == 68 && snake2.dir != 2) snake2.requestDir = 0;
-    if (dir.which == 83 && snake2.dir != 3) snake2.requestDir = 1;
-
-    if (dir.which == 32) startGame();
-});
 
 // module.exports = {
 //     Snake,
