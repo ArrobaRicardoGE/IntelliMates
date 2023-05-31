@@ -156,7 +156,7 @@ app.get('/juegos', (request, response) => {
  */
 app.get('/runner', (request, response) => {
     const code = request.query.code;
-    const algorithm_id = request.query.algorithm_id;
+    const algorithm_id = request.query.aid;
 
     // write code to file
     const filename = `${request.session.uid}-${Date.now()}`;
@@ -173,29 +173,41 @@ app.get('/runner', (request, response) => {
         }
     );
 
-    // execute algorithms
-    run(
-        './snakeGame/DemoSnake.py',
-        `../usergen/algorithms/${filename}.py`,
-        `../usergen/output/${filename}.txt`,
-        (out) => {
-            if (out == 0) {
-                fs.readFile(
-                    __dirname + `/usergen/output/${filename}.txt`,
-                    'utf-8',
-                    (err, data) => {
-                        if (err) {
-                            console.log(err);
-                            response.json({ err: err });
-                            return;
-                        }
-                        response.json({ data: data });
+    db.all(
+        'SELECT * FROM `algorithms` where `algorithm_id` = ?',
+        [algorithm_id],
+        (err, rows) => {
+            if (err) {
+                console.log(err);
+                response.json({ err: err });
+            } else {
+                const apath = rows[0].filepath;
+                // execute algorithms
+                run(
+                    '..' + apath,
+                    `../usergen/algorithms/${filename}.py`,
+                    `../usergen/output/${filename}.txt`,
+                    (out) => {
+                        if (out == 0) {
+                            fs.readFile(
+                                __dirname + `/usergen/output/${filename}.txt`,
+                                'utf-8',
+                                (err, data) => {
+                                    if (err) {
+                                        console.log(err);
+                                        response.json({ err: err });
+                                        return;
+                                    }
+                                    response.json({ data: data });
+                                }
+                            );
+                        } else response.json({ err: 'Unexpected error' });
+                    },
+                    (err) => {
+                        response.json({ err: err });
                     }
                 );
-            } else response.json({ err: 'Unexpected error' });
-        },
-        (err) => {
-            response.json({ err: err });
+            }
         }
     );
 });
