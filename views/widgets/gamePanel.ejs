@@ -89,8 +89,8 @@
             )
                 .then((response) => response.json())
                 .then((json) => {
-                    window.alert(json['aid']);
-                    alert(json['code']);
+                    window.alert(json['err']);
+                    window.alert(json['data']);
                 })
                 .finally(() => {
                     button.innerHTML = '<i class="bi bi-play-fill"></i>';

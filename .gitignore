@@ -106,3 +106,5 @@ dist
 monaco-editor-*
 /scripts
 *.db
+__pycache__
+usergen/
