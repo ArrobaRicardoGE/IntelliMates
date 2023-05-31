@@ -201,7 +201,7 @@ app.get('/runner', (request, response) => {
                                     response.json({ data: data });
                                 }
                             );
-                        } else response.json({ err: 'Unexpected error' });
+                        } // else response.json({ err: 'Unexpected error' });
                     },
                     (err) => {
                         response.json({ err: err });
@@ -221,7 +221,7 @@ app.get('/runner', (request, response) => {
  *  - Writing to database and checking for any errors (i.e. username taken)
  */
 app.post('/register', (request, response) => {
-    function validatePassword(password){
+    function validatePassword(password) {
         var pattern = /^(?=.*[a-z])(?=.*[A-Z]).{12,}$/;
         return pattern.test(password);
     }
@@ -236,7 +236,7 @@ app.post('/register', (request, response) => {
             // response.status(701).send();
             return;
         }
-        if(!validatePassword(password1)){
+        if (!validatePassword(password1)) {
             response.redirect('/signup?status=4');
             response.end();
             return;
