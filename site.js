@@ -172,6 +172,10 @@ app.get('/runner', (request, response) => {
  *  - Writing to database and checking for any errors (i.e. username taken)
  */
 app.post('/register', (request, response) => {
+    function validatePassword(password){
+        var pattern = /^(?=.*[a-z])(?=.*[A-Z]).{12,}$/;
+        return pattern.test(password);
+    }
     let username = request.body.username;
     let email = request.body.email;
     let password1 = request.body.password1;
@@ -181,6 +185,11 @@ app.post('/register', (request, response) => {
             response.redirect('/signup?status=1');
             response.end();
             // response.status(701).send();
+            return;
+        }
+        if(!validatePassword(password1)){
+            response.redirect('/signup?status=4');
+            response.end();
             return;
         }
         db.run(

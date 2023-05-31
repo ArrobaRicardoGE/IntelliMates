@@ -9,7 +9,7 @@ describe('Sign up', () => {
             .send({
                 username: 'othertest',
                 email: 'test@mail.com',
-                password1: '12345',
+                password1: 'Abecedario11',
             })
             .expect(302);
         expect(response.text).toMatch(/status=0/i);
@@ -20,8 +20,8 @@ describe('Sign up', () => {
             .send({
                 username: 'othertest',
                 email: 'test@mail.com',
-                password1: '12345',
-                password2: '12344',
+                password1: 'Abecedario11',
+                password2: 'Abecedario12',
             })
             .expect(302);
         expect(response.text).toMatch(/status=1/i);
@@ -32,11 +32,23 @@ describe('Sign up', () => {
             .send({
                 username: 'test',
                 email: 'test@mail.com',
-                password1: '12345',
-                password2: '12345',
+                password1: 'Abecedario11',
+                password2: 'Abecedario11',
             })
             .expect(302);
         expect(response.text).toMatch(/status=2/i);
+    });
+    test('Invalid password', async () => {
+        const response = await request(app)
+            .post('/register')
+            .send({
+                username: 'juju_test',
+                email: 'test@mail.com',
+                password1: 'abecedario11',
+                password2: 'abecedario11',
+            })
+            .expect(302);
+        expect(response.text).toMatch(/status=4/i);
     });
     test('Successful registration', async () => {
         const response = await request(app)
@@ -44,8 +56,8 @@ describe('Sign up', () => {
             .send({
                 username: 'unittestuser',
                 email: 'test@mail.com',
-                password1: '12345',
-                password2: '12345',
+                password1: 'Abecedario11',
+                password2: 'Abecedario11',
             })
             .expect(302);
         expect(response.text).toMatch(/status=3/i);

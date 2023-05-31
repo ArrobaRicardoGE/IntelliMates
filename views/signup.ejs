@@ -179,6 +179,14 @@
                             >
                                 ¡Cuenta registrada! Por favor, inicia sesión.
                             </div>
+                            
+                            <% } %> <% if(status == 4) { %>
+                                <div
+                                    class="alert alert-danger mb-3 w-50 mx-auto"
+                                    role="alert"
+                                >
+                                    La contraseña debe tener 12 caracteres de longitud y al menos una letra mayúscula y minúscula.
+                                </div>
                             <% } %>
                         </form>
                         <div class="card-footer">
