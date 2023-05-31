@@ -23,6 +23,42 @@
         code: code,
         language: 'python',
         theme: 'vs-dark',
+        value: [
+                    code ||
+                        ` 
+
+    ''' 
+    You can interact with:
+def get_world():
+    Returns a dictionary with the following information
+    game_status: a number representing the game status
+        400: game in progress
+        500: game error
+        100: game tied, no winner
+        [1,4]: meaning that player won
+    my_player_id: return player id, a number from [1,4]
+    players_alive: returns a list with the indices of players alive, indices go from [1,4]
+    world_dimensions: a tuple of how many (rows, columns)
+    world_map: a matrix with a number indicating,
+        0: empty square
+        [1,4]: a snake with that index number occupies that square
+        [11, 14]: the head of the snake with that number occupies that square
+        [20]: food
+    world_walls: a matrix with a list in each position,
+        list goes [down, left, up, right]
+        a value of 0 represents no wall, 
+        a value of 1 represents a wall
+    
+def send_move(move):
+    prints an integer:
+        -1 to move to the left.
+        1 to move to the right.
+        0 to continue moving forward
+        
+    '''
+    
+                `,
+                ].join('\n'),
     });
     editor.getModel().onDidChangeContent((event) => {
         localStorage.setItem('code', editor.getValue());
