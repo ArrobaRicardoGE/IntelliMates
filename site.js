@@ -2,6 +2,8 @@ const express = require('express');
 const session = require('express-session');
 const bunyan = require('bunyan');
 const sqlite3 = require('sqlite3').verbose();
+const { run } = require('./runner');
+const fs = require('fs');
 
 /**
  * Used for logging errors, warnings and information
@@ -155,12 +157,36 @@ app.get('/juegos', (request, response) => {
 app.get('/runner', (request, response) => {
     // Temporarily, this just returns whatever was sent in json
     // The sleep is used to simulate the execution (whatever it may take)
-    function sleep(time) {
-        return new Promise((resolve) => setTimeout(resolve, time));
-    }
-    sleep(3000).then(() => {
-        response.json({ aid: request.query.aid, code: request.query.code });
-    });
+    // function sleep(time) {
+    //     return new Promise((resolve) => setTimeout(resolve, time));
+    // }
+    // sleep(3000).then(() => {
+    //     response.json({ aid: request.query.aid, code: request.query.code });
+    // });
+
+    run(
+        './snakeGame/DemoSnake.py',
+        './snakeGame/DemoSnakeLog.py',
+        (out) => {
+            if (out == 0) {
+                fs.readFile(
+                    __dirname + '/static/usergen/result.txt',
+                    'utf-8',
+                    (err, data) => {
+                        if (err) {
+                            console.log(err);
+                            response.json({ err: err });
+                            return;
+                        }
+                        response.json({ data: data });
+                    }
+                );
+            } else response.json({ err: 'Unexpected error' });
+        },
+        (err) => {
+            response.json({ err: err });
+        }
+    );
 });
 
 /**
