@@ -31,6 +31,7 @@ function run(
         ],
         {
             cwd: 'D:\\ricar\\Documents\\UP\\8\\IngSoftware\\3\\IntelliMates\\gameBackend',
+            timeout: 10000,
         }
     );
     child.stdout.on('data', (data) => {
