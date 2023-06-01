@@ -37,6 +37,7 @@ let snake1 = null,
 let gameOver = true;
 let frameRate = 0;
 let idxSim = 0;
+let tie = false;
 
 const UP = 3,
     DOWN = 1,
@@ -256,8 +257,11 @@ function requestDirChange(snake, dir) {
 /**Update from the passed simulation */
 function requestStatusUpdate() {
     if (idxSim >= sim.length) return;
-    if (sim[idxSim].length == 1 && sim[idxSim][0] == 500) {
-        alert('Runtime error');
+    if (sim[idxSim].length == 1) {
+        if (sim[idxSim][0] == 500) alert('Runtime error');
+        else if (sim[idxSim][0] == 1) {
+            tie = true;
+        }
         gameOver = true;
         return;
     }
@@ -309,9 +313,14 @@ function draw() {
     if (!gameOver) window.requestAnimationFrame(draw);
     else {
         let winner = null;
-        if (checkCollisionBorder(snake2) || checkCollisionSnake(snake2, snake1))
+        if (tie) {
+            winner = snake1.size > snake2.size ? 'snake1' : 'snake2';
+        } else if (
+            checkCollisionBorder(snake2) ||
+            checkCollisionSnake(snake2, snake1)
+        ) {
             winner = 'snake1';
-        else winner = 'snake2';
+        } else winner = 'snake2';
         window.alert('Game over! Winner: ' + winner);
     }
 }

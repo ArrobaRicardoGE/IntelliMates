@@ -251,12 +251,14 @@ namespace backend::snake{
             int mv = players_move[i];
             coordinate head_block = snakes[i].get_head();
             coordinate next_block;
-            next_block.first %= rows;
-            next_block.second %= columns;
+            
             if(mv == 0) next_block = snakes[i].get_front();
             if(mv == 1) next_block = snakes[i].get_right();
             if(mv == -1) next_block = snakes[i].get_left();
 
+            next_block.first %= rows;
+            next_block.second %= columns;
+            
             if(is_collision(head_block, next_block)){ 
                 snakes[i].kill();
                 continue;

@@ -11,8 +11,8 @@ while(True):
         send_move(0)
         continue
     
-    if cnt == 29:
-        send_move(-1)
+    if cnt == 28:
+        send_move(1)
         cnt = 0
     else: 
         send_move(0)
