@@ -48,11 +48,12 @@ function run(
     });
 
     child.on('close', (code) => {
-        console.log(code);
+        console.log(code, 'closing code');
         callback_success(code);
     });
 
     child.stderr.on('data', (data) => {
+        console.log(data, "error");
         callback_error(ab2str(data));
     });
 }

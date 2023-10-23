@@ -108,3 +108,5 @@ monaco-editor-*
 *.db
 __pycache__
 usergen/
+
+gameBackend/snakeGame/__pycache__/playerCommands.cpython-311.pyc
