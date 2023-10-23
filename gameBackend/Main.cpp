@@ -39,9 +39,6 @@ int main(int argc, char **argv) {
        wrapped_pipes.push_back(std::move(wrapper));
     }
     
-    
-
-
     snake::WorldController world(
             number_of_players,
             std::move(wrapped_pipes),

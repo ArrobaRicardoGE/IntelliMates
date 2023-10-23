@@ -46,6 +46,8 @@ app.use(
     express.static(__dirname + '/node_modules/startbootstrap-freelancer/dist')
 );
 
+console.log(__dirname);
+
 app.set('view engine', 'ejs');
 
 app.use(
@@ -165,9 +167,12 @@ app.get('/runner', (request, response) => {
         'from playerCommands import get_world, send_move\n' + code,
         (err) => {
             if (err) {
+                console.log('No file');
+                console.log(err);
                 logger.error(err);
                 response.json({ err: err });
             } else {
+                console.log('New file');
                 logger.info('New file added', filename);
             }
         }

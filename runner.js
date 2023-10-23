@@ -22,16 +22,12 @@ function run(
     callback_success,
     callback_error
 ) {
+
+    console.log(output_path, algorithm1_path, algorithm2_path);
+
     let child = spawn(
-        'wsl',
+        './Main',
         [
-            'bash',
-            '-l',
-            '-c',
-            'cd',
-            '/mnt/d/ricar/Documents/UP/8/IngSoftware/3/IntelliMates/gameBackend',
-            '&&',
-            './Main',
             '2',
             './snakeGame/worlds/world_30_30_2_players_corners.txt',
             output_path,
@@ -41,10 +37,11 @@ function run(
             algorithm2_path,
         ],
         {
-            cwd: 'D:\\ricar\\Documents\\UP\\8\\IngSoftware\\3\\IntelliMates\\gameBackend',
+            cwd: './gameBackend/',
             timeout: 10000,
         }
     );
+    console.log('here');
     child.stdout.on('data', (data) => {
         console.log(ab2str(data));
         callback_success(ab2str(data));
