@@ -1,0 +1,16 @@
+<div>
+    <h2 class="text-light text-center"> User: <%= user.username %></h2>
+    <p class="text-light">Rating: <%= user.elo%></p>
+    <p class="text-light">Member since: <%= user.dateCreated %></p>
+    <img src="<%= user.profileImage %>" alt="<%= user.username %>'s Profile Image" width="200">
+</div>
+<div>
+    <h2 class="text-light text-center">
+    Last Replay: <%= user.algorithmName %>
+    </h2>
+<ul>
+    <li><a href="<%= user.urls.bestWin %>">Best Win</a></li>
+    <li><a href="<%= user.urls.worstLoss %>">Worst Win</a></li>
+    <li><a href="<%= user.urls.bestLoss %>">Best Loss</a></li>
+</ul>
+</div>

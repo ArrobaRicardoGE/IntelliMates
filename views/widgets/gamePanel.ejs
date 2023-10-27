@@ -28,6 +28,16 @@
                 <% }); %>
             </ul>
         </div>
+        <div style="margin-top: 20px;">
+        <button
+        class="btn btn-outline-light"
+        id="evaluarButton"
+        onclick="evaluar()"
+        >
+            Evaluar
+        </button>
+        <input type="text" id="algorithmName" name="text" placeholder="El nombre de tu algoritmo">
+        </div>
     </div>
 
     <!-- Function to update the selected algorithm in the dropdown button -->
@@ -64,6 +74,34 @@
         </div>
     </div>
 
+    <script>
+        function evaluar(){
+            const code = editor.getValue();
+            const button = document.getElementById('evaluarButton');
+            const algorithmName = document.getElementById('algorithmName');
+            button.innerHTML =
+                '<div class="spinner-border spinner-border-sm" role="status"></div>';
+            fetch(
+                `eval?code=${encodeURIComponent(
+                    editor.getValue()
+                )}&algorithmName=${algorithmName.value}`
+            )
+                .then((response) => response.json())
+                .then((json) => {
+                    if (json['err']) {
+                        window.alert(json['err']);
+                    }
+                    
+                })
+                .finally(() => {
+                    button.innerHTML = '<i class="bi bi-play-fill"></i>';
+                    window.alert(
+                            'Tu codigo se ha evaluado. Checa tu nuevo rating en tu perfil!'
+                            );
+                });
+        }
+    </script>
+
     <!--Function for code execution. First, it has to fetch the selected 
         algorithm's id and implemented code. Then it sends it to the 
         executor -->
@@ -94,9 +132,11 @@
                         window.alert(json['err']);
                     } else {
                         let str = json['data'];
+                        console.log('response data', str);
                         str = str.replaceAll('\n', '],[').replaceAll(' ', ',');
                         str = '[[' + str.substring(0, str.length - 2) + ']';
                         sim = JSON.parse(str);
+                        console.log('sim', sim)
                         startGame();
                     }
                 })

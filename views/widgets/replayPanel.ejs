@@ -1,0 +1,42 @@
+<!-- Game and editor -->
+<div style="padding: 30px; height: 80vh">
+    <div style="width: 100%; height: 90%; float: center; text-align: center">
+        <h2 class="text-light text-center">
+        Juego
+            <button
+            id="runButton"
+            class="btn btn-outline-light"
+            onclick="runCode()"
+            >
+                <i class="bi bi-play-fill"></i>
+            </button>
+        </h2>
+        <div style="width: 50%;  float: left; text-align: center">
+            <h3 class="text-light text-center">
+                Player 1: <%= player_1 %>
+            </h3>
+        </div>
+        <div style="width: 50%; float: right; text-align: center">
+            <h3 class="text-light text-center">
+                Player 2: <%= player_2 %>
+            </h3>
+        </div>
+        <%- include('../games/snake.ejs') %>
+    </div>
+
+
+    <!--Function for code execution. First, it has to fetch the selected 
+        algorithm's id and implemented code. Then it sends it to the 
+        executor -->
+    <script>
+        let sim = null;
+        function runCode() {
+            let str = `<%= game %>`;
+            console.log('game data', str);
+            str = str.replaceAll('\n', '],[').replaceAll(' ', ',');
+            str = '[[' + str.substring(0, str.length - 2) + ']';
+            sim = JSON.parse(str);
+            startGame();
+        }
+    </script>
+</div>
